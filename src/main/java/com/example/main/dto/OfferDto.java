@@ -39,11 +39,11 @@ public class OfferDto {
         this.description = description;
     }
 
-    public UserDto getAuthorId() {
+    public UserDto getAuthor() {
         return author;
     }
 
-    public void setAuthorId(UserDto author) {
+    public void setAuthor(UserDto author) {
         this.author = author;
     }
 }
