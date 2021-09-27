@@ -6,13 +6,13 @@ public class OfferDto {
     private Long id;
     private String title;
     private String description;
-    private UserDto author;
+    private int authorId;
 
-    public OfferDto(Long id, String title, String description, UserDto author) {
+    public OfferDto(Long id, String title, String description, int authorId) {
         this.id = id;
         this.title = title;
         this.description = description;
-        this.author = author;
+        this.authorId = authorId;
     }
 
     public void setId(Long id) {
@@ -39,11 +39,11 @@ public class OfferDto {
         this.description = description;
     }
 
-    public UserDto getAuthor() {
-        return author;
+    public int getAuthorId() {
+        return authorId;
     }
 
-    public void setAuthor(UserDto author) {
-        this.author = author;
+    public void setAuthorId(int author) {
+        this.authorId = author;
     }
 }

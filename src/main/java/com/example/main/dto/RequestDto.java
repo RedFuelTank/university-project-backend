@@ -4,13 +4,13 @@ public class RequestDto {
     private Long id;
     private String title;
     private String description;
-    private UserDto author;
+    private int authorId;
 
-    public RequestDto(Long id, String title, String description, UserDto author) {
+    public RequestDto(Long id, String title, String description, int author) {
         this.id = id;
         this.title = title;
         this.description = description;
-        this.author = author;
+        this.authorId = author;
     }
 
     public void setId(Long id) {
@@ -37,11 +37,11 @@ public class RequestDto {
         this.description = description;
     }
 
-    public UserDto getAuthor() {
-        return author;
+    public int getAuthorId() {
+        return authorId;
     }
 
-    public void setAuthor(UserDto author) {
-        this.author = author;
+    public void setAuthorId(int authorId) {
+        this.authorId = authorId;
     }
 }
