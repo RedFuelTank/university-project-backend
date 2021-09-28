@@ -1,36 +1,22 @@
-package com.example.main.model;
+package com.example.main.dto;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import java.util.Optional;
 
-@Entity
-public class User {
+public abstract class ClientDto {
+  private Long id;
   private String username;
-  private String password;
   private String email;
   private String name;
   private String surname;
   private String phoneNumber;
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
 
-
-  public User(String username, String password, String email, String name, String surname, String phoneNumber) {
+  public ClientDto(Long id, String username, String email, String name, String surname, String phoneNumber) {
+    this.id = id;
     this.username = username;
-    this.password = password;
     this.email = email;
     this.name = name;
     this.surname = surname;
     this.phoneNumber = phoneNumber;
-    this.id = id;
-  }
-
-  public void setId(Long id) {
-    this.id = id;
   }
 
   public Long getId() {
@@ -39,10 +25,6 @@ public class User {
 
   public String getUsername() {
     return username;
-  }
-
-  public String getPassword() {
-    return password;
   }
 
   public Optional<String> getEmail() {
@@ -61,12 +43,12 @@ public class User {
     return Optional.ofNullable(this.phoneNumber);
   }
 
-  public void setUsername(String username) {
-    this.username = username;
+  public void setId(Long id) {
+    this.id = id;
   }
 
-  public void setPassword(String password) {
-    this.password = password;
+  public void setUsername(String username) {
+    this.username = username;
   }
 
   public void setEmail(String email) {
