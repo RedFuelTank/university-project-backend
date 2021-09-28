@@ -12,15 +12,16 @@ import java.util.List;
 @RequestMapping("/requests")
 @RestController
 public class RequestsController {
-    private AdvertisementService advertisementService;
+  private AdvertisementService advertisementService;
 
-    @GetMapping
-    public List<RequestDto> get() {
-        return advertisementService.getRequests();
-    }
+  @Autowired
+  public RequestsController(AdvertisementService advertisementService) {
+    this.advertisementService = advertisementService;
+  }
 
-    @Autowired
-    public RequestsController(AdvertisementService advertisementService) {
-        this.advertisementService = advertisementService;
-    }
+  @GetMapping
+  public List<RequestDto> get() {
+    return advertisementService.getRequests();
+  }
+
 }

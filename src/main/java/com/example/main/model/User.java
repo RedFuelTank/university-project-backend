@@ -8,15 +8,15 @@ import java.util.Optional;
 
 @Entity
 public class User {
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
   private String username;
   private String password;
   private String email;
   private String name;
   private String surname;
   private String phoneNumber;
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
 
 
   public User(String username, String password, String email, String name, String surname, String phoneNumber) {
@@ -26,7 +26,10 @@ public class User {
     this.name = name;
     this.surname = surname;
     this.phoneNumber = phoneNumber;
-    this.id = id;
+  }
+
+  public User() {
+
   }
 
   public void setId(Long id) {
