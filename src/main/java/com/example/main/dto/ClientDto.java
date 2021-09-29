@@ -3,24 +3,18 @@ package com.example.main.dto;
 import java.util.Optional;
 
 public abstract class ClientDto {
-  private Long id;
   private String username;
   private String email;
   private String name;
   private String surname;
   private String phoneNumber;
 
-  public ClientDto(Long id, String username, String email, String name, String surname, String phoneNumber) {
-    this.id = id;
+  public ClientDto(String username, String email, String name, String surname, String phoneNumber) {
     this.username = username;
     this.email = email;
     this.name = name;
     this.surname = surname;
     this.phoneNumber = phoneNumber;
-  }
-
-  public Long getId() {
-    return id;
   }
 
   public String getUsername() {
@@ -41,10 +35,6 @@ public abstract class ClientDto {
 
   public Optional<String> getPhoneNumber() {
     return Optional.ofNullable(this.phoneNumber);
-  }
-
-  public void setId(Long id) {
-    this.id = id;
   }
 
   public void setUsername(String username) {

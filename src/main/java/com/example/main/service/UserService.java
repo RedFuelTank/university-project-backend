@@ -1,6 +1,6 @@
 package com.example.main.service;
 
-import com.example.main.builder.UserBuilder;
+import com.example.main.builder.UserFactory;
 import com.example.main.dto.RegistrationDto;
 import com.example.main.dto.UserDto;
 import com.example.main.model.User;
@@ -36,12 +36,7 @@ public class UserService {
 
   private List<UserDto> convertToDto(List<User> users) {
     return users.stream()
-      .map(user -> {
-        UserBuilder userBuilder = new UserBuilder(user.getId(), user.getUsername(), user.getName(), user.getSurname());
-        user.getEmail().ifPresent(userBuilder::setEmail);
-        user.getPhoneNumber().ifPresent(userBuilder::setPhoneNumber);
-        return userBuilder.apply();
-      })
+      .map(UserFactory::createUserDto)
       .collect(Collectors.toList());
 
   }
@@ -59,16 +54,13 @@ public class UserService {
       throw new BadSurname();
     }
 
-    User savedUser = userRepository.save(new User(registrationDto.getUsername(),
-      registrationDto.getPassword(), registrationDto.getEmail().orElse(null),
-      registrationDto.getName(), registrationDto.getSurname(), registrationDto.getPhoneNumber().orElse(null)));
+    User savedUser = userRepository.save(UserFactory.createUser(registrationDto));
     return findById(savedUser.getId());
   }
 
   private UserDto findById(Long id)  {
     User user = getDbUserByID(id);
-    return new UserDto(user.getId(), user.getUsername(), user.getEmail().orElse(null), user.getName(),
-      user.getSurname(), user.getPhoneNumber().orElse(null));
+    return UserFactory.createUserDto(user);
 
   }
 
