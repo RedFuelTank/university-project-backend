@@ -1,4 +1,4 @@
-package com.example.main.builder;
+package com.example.main.factory;
 
 import com.example.main.dto.RegistrationDto;
 import com.example.main.dto.UserDto;

@@ -1,6 +1,6 @@
 package com.example.main.service;
 
-import com.example.main.builder.UserFactory;
+import com.example.main.factory.UserFactory;
 import com.example.main.dto.RegistrationDto;
 import com.example.main.dto.UserDto;
 import com.example.main.model.User;
