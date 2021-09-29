@@ -1,9 +1,14 @@
 package com.example.main.service;
 
 import com.example.main.builder.UserBuilder;
+import com.example.main.dto.RegistrationDto;
 import com.example.main.dto.UserDto;
 import com.example.main.model.User;
 import com.example.main.repository.UserRepository;
+import com.example.main.service.exception.BadName;
+import com.example.main.service.exception.BadSurname;
+import com.example.main.service.exception.BadUsername;
+import com.example.main.service.exception.UserNotFound;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -14,22 +19,22 @@ import java.util.stream.Collectors;
 
 @Service
 public class UserService {
-    private UserRepository userRepository;
+  private UserRepository userRepository;
 
   @Autowired
   public UserService(UserRepository userRepository) {
     this.userRepository = userRepository;
   }
 
-    public List<UserDto> getAll(@RequestParam Optional<String> nameOp) {
-      if (nameOp.isEmpty()) {
-        return convertToDto(userRepository.findAll());
-      } else {
-        return convertToDto(userRepository.findByNameIsLike('%' + nameOp.get().toLowerCase() + '%'));
-      }
+  public List<UserDto> getAll(@RequestParam Optional<String> nameOp) {
+    if (nameOp.isEmpty()) {
+      return convertToDto(userRepository.findAll());
+    } else {
+      return convertToDto(userRepository.findByNameIsLike('%' + nameOp.get().toLowerCase() + '%'));
     }
+  }
 
-    private List<UserDto> convertToDto(List<User> users) {
+  private List<UserDto> convertToDto(List<User> users) {
     return users.stream()
       .map(user -> {
         UserBuilder userBuilder = new UserBuilder(user.getId(), user.getUsername(), user.getName(), user.getSurname());
@@ -39,5 +44,35 @@ public class UserService {
       })
       .collect(Collectors.toList());
 
+  }
+
+  public UserDto save(RegistrationDto registrationDto) {
+    if (registrationDto.getUsername().isBlank()) {
+      throw new BadUsername();
     }
+
+    if (registrationDto.getName().isBlank()) {
+      throw new BadName();
+    }
+
+    if (registrationDto.getSurname().isBlank()) {
+      throw new BadSurname();
+    }
+
+    User savedUser = userRepository.save(new User(registrationDto.getUsername(),
+      registrationDto.getPassword(), registrationDto.getEmail().orElse(null),
+      registrationDto.getName(), registrationDto.getSurname(), registrationDto.getPhoneNumber().orElse(null)));
+    return findById(savedUser.getId());
+  }
+
+  private UserDto findById(Long id)  {
+    User user = getDbUserByID(id);
+    return new UserDto(user.getId(), user.getUsername(), user.getEmail().orElse(null), user.getName(),
+      user.getSurname(), user.getPhoneNumber().orElse(null));
+
+  }
+
+  private User getDbUserByID(Long id) {
+    return userRepository.findById(id).orElseThrow(UserNotFound::new);
+  }
 }

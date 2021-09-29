@@ -1,6 +1,7 @@
 package com.example.main.repository;
 
 import com.example.main.model.Advertisement;
+import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
