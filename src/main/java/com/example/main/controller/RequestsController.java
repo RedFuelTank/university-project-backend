@@ -1,11 +1,10 @@
 package com.example.main.controller;
 
+import com.example.main.dto.OfferDto;
 import com.example.main.dto.RequestDto;
 import com.example.main.service.AdvertisementService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -24,4 +23,13 @@ public class RequestsController {
     return advertisementService.getRequests();
   }
 
+  @GetMapping("/{id}")
+  public RequestDto getById(@PathVariable Long id) {
+    return (RequestDto) advertisementService.findById(id);
+  }
+
+  @PostMapping()
+  public RequestDto saveOffer(@RequestBody RequestDto requestDto) {
+    return advertisementService.save(requestDto);
+  }
 }

@@ -1,36 +1,24 @@
-package com.example.main.model;
+package com.example.main.dto;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-
-@Entity
-public class Advertisement {
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
+public abstract class AdvertisementDto {
   private Long id;
   private String title;
   private String description;
   private int authorId;
-  private Type type;
 
-  public Advertisement(String title, String description, int authorId, Type type) {
+  public AdvertisementDto(Long id, String title, String description, int authorId) {
+    this.id = id;
     this.title = title;
     this.description = description;
     this.authorId = authorId;
-    this.type = type;
-  }
-
-  public Advertisement() {
-  }
-
-  public void setId(Long id) {
-    this.id = id;
   }
 
   public Long getId() {
     return id;
+  }
+
+  public void setId(Long id) {
+    this.id = id;
   }
 
   public String getTitle() {
@@ -55,17 +43,5 @@ public class Advertisement {
 
   public void setAuthorId(int authorId) {
     this.authorId = authorId;
-  }
-
-  public Type getType() {
-    return type;
-  }
-
-  public void setType(Type type) {
-    this.type = type;
-  }
-
-  public enum Type {
-    REQUEST, OFFER
   }
 }

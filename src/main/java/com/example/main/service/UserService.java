@@ -5,10 +5,10 @@ import com.example.main.dto.RegistrationDto;
 import com.example.main.dto.UserDto;
 import com.example.main.model.User;
 import com.example.main.repository.UserRepository;
-import com.example.main.service.exception.BadName;
-import com.example.main.service.exception.BadSurname;
-import com.example.main.service.exception.BadUsername;
-import com.example.main.service.exception.UserNotFound;
+import com.example.main.service.exception.BadNameException;
+import com.example.main.service.exception.BadSurnameException;
+import com.example.main.service.exception.BadUsernameException;
+import com.example.main.service.exception.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -43,15 +43,15 @@ public class UserService {
 
   public UserDto save(RegistrationDto registrationDto) {
     if (registrationDto.getUsername().isBlank()) {
-      throw new BadUsername();
+      throw new BadUsernameException();
     }
 
     if (registrationDto.getName().isBlank()) {
-      throw new BadName();
+      throw new BadNameException();
     }
 
     if (registrationDto.getSurname().isBlank()) {
-      throw new BadSurname();
+      throw new BadSurnameException();
     }
 
     User savedUser = userRepository.save(UserFactory.createUser(registrationDto));
@@ -61,10 +61,9 @@ public class UserService {
   private UserDto findById(Long id)  {
     User user = getDbUserByID(id);
     return UserFactory.createUserDto(user);
-
   }
 
   private User getDbUserByID(Long id) {
-    return userRepository.findById(id).orElseThrow(UserNotFound::new);
+    return userRepository.findById(id).orElseThrow(UserNotFoundException::new);
   }
 }
