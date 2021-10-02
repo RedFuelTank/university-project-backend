@@ -2,6 +2,7 @@ package com.example.main.controller;
 
 import com.example.main.dto.RegistrationDto;
 import com.example.main.dto.UserDto;
+import com.example.main.model.User;
 import com.example.main.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -27,5 +28,10 @@ public class UsersController {
   @PostMapping
   public UserDto saveUser(@RequestBody RegistrationDto userDto) {
     return userService.save(userDto);
+  }
+
+  @GetMapping("/{id}")
+  public UserDto getById(@PathVariable Long id) {
+    return userService.findById(id);
   }
 }

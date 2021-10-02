@@ -43,9 +43,7 @@ public class AdvertisementService {
   public AdvertisementDto findById(Long id) {
     Advertisement advertisement = getDbAdvertisementById(id);
 
-    return advertisement.getType() == Advertisement.Type.OFFER
-      ? AdvertisementFactory.createOfferDto(advertisement)
-      : AdvertisementFactory.createRequestDto(advertisement);
+    return advertisement.getType() == Advertisement.Type.OFFER ? AdvertisementFactory.createOfferDto(advertisement) : AdvertisementFactory.createRequestDto(advertisement);
   }
 
   private Advertisement getDbAdvertisementById(Long id) {

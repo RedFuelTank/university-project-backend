@@ -58,7 +58,7 @@ public class UserService {
     return findById(savedUser.getId());
   }
 
-  private UserDto findById(Long id)  {
+  public UserDto findById(Long id)  {
     User user = getDbUserByID(id);
     return UserFactory.createUserDto(user);
   }
