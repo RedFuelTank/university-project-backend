@@ -85,7 +85,7 @@ public abstract class AdvertisementDto {
   }
 
   public void setUser(UserDto user) {
-    setName(user.getName() + user.getSurname());
+    setName(user.getName() + " " + user.getSurname());
     user.getEmail().ifPresent(this::setAuthorEmail);
     user.getPhoneNumber().ifPresent(this::setAuthorPhoneNumber);
     setAuthorUsername(user.getUsername());
