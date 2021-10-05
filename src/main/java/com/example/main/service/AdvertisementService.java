@@ -60,5 +60,9 @@ public class AdvertisementService {
     return (RequestDto) findById(request.getId());
   }
 
+  public void delete(Long id) {
+    advertisementRepository.deleteById(id);
+  }
+
 
 }

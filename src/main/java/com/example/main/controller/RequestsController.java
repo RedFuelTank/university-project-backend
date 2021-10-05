@@ -40,4 +40,9 @@ public class RequestsController {
   public RequestDto saveOffer(@RequestBody RequestDto requestDto) {
     return advertisementService.save(requestDto);
   }
+
+  @DeleteMapping("{id}")
+  public void deleteOffer(@PathVariable Long id) {
+    advertisementService.delete(id);
+  }
 }

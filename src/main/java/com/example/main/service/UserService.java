@@ -66,4 +66,9 @@ public class UserService {
   private User getDbUserByID(Long id) {
     return userRepository.findById(id).orElseThrow(UserNotFoundException::new);
   }
+
+  public void delete(Long id) {
+    userRepository.deleteById(id);
+  }
+
 }

@@ -13,32 +13,37 @@ import java.util.List;
 @RequestMapping("/offers")
 @RestController
 public class OffersController {
-    private final AdvertisementService advertisementService;
-    private final UserService userService;
+  private final AdvertisementService advertisementService;
+  private final UserService userService;
 
 
-    @Autowired
-    public OffersController(AdvertisementService advertisementService, UserService userService) {
-        this.advertisementService = advertisementService;
-        this.userService = userService;
-    }
+  @Autowired
+  public OffersController(AdvertisementService advertisementService, UserService userService) {
+    this.advertisementService = advertisementService;
+    this.userService = userService;
+  }
 
-    @GetMapping
-    public List<OfferDto> get() {
-        List<OfferDto> offers = advertisementService.getOffers();
-        offers.forEach(request -> request.setUser(userService.findById((long) request.getAuthorId())));
-        return offers;
-    }
+  @GetMapping
+  public List<OfferDto> get() {
+    List<OfferDto> offers = advertisementService.getOffers();
+    offers.forEach(request -> request.setUser(userService.findById((long) request.getAuthorId())));
+    return offers;
+  }
 
-    @GetMapping("/{id}")
-    public OfferDto getById(@PathVariable Long id) {
-        OfferDto offer = (OfferDto) advertisementService.findById(id);
-        offer.setUser(userService.findById((long) offer.getAuthorId()));
-        return offer;
-    }
+  @GetMapping("/{id}")
+  public OfferDto getById(@PathVariable Long id) {
+    OfferDto offer = (OfferDto) advertisementService.findById(id);
+    offer.setUser(userService.findById((long) offer.getAuthorId()));
+    return offer;
+  }
 
-    @PostMapping()
-    public OfferDto saveOffer(@RequestBody OfferDto offerDto) {
-        return advertisementService.save(offerDto);
-    }
+  @PostMapping()
+  public OfferDto saveOffer(@RequestBody OfferDto offerDto) {
+    return advertisementService.save(offerDto);
+  }
+
+  @DeleteMapping("{id}")
+  public void deleteOffer(@PathVariable Long id) {
+    advertisementService.delete(id);
+  }
 }
