@@ -8,6 +8,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
@@ -36,7 +37,7 @@ public class OffersController {
     return advertisementService.getOffersByPage(page);
   }
 
-//  @GetMapping()
+//  @GetMapping("{id}")
 //  public OfferDto getById(@RequestParam Long id) {
 //    OfferDto offer = (OfferDto) advertisementService.findById(id);
 //    offer.updateUserInfo(userService.findById((long) offer.getAuthorId()));

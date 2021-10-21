@@ -32,7 +32,7 @@ public class RequestsController {
     return advertisementService.getRequestsByPage(page);
   }
 
-//  @GetMapping()
+//  @GetMapping("{id}")
 //  public RequestDto getById(@RequestParam Long id) {
 //    RequestDto request = (RequestDto) advertisementService.findById(id);
 //    request.updateUserInfo(userService.findById((long) request.getAuthorId()));
