@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -21,12 +22,20 @@ public class AdvertisementService {
   private AdvertisementRepository advertisementRepository;
   private UserService userService;
 
-  public List<OfferDto> getOffers() {
+  public List<OfferDto> getOffers(Optional<Integer> page) {
+    if (page.isPresent()) {
+      return getOffersByPage(page.get());
+    }
+
     return advertisementRepository.getAllOffers().stream()
       .map(this::convertAdvertisementToOfferDto).collect(Collectors.toList());
   }
 
-  public List<RequestDto> getRequests() {
+  public List<RequestDto> getRequests(Optional<Integer> page) {
+    if (page.isPresent()) {
+      return getRequestsByPage(page.get());
+    }
+
     return advertisementRepository.getAllRequests().stream()
       .map(this::convertAdvertisementToRequestDto).collect(Collectors.toList());
   }

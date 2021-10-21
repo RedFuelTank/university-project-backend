@@ -25,24 +25,19 @@ public class OffersController {
     this.userService = userService;
   }
 
-  @GetMapping
-  public List<OfferDto> get() {
-    List<OfferDto> offers = advertisementService.getOffers();
+  @GetMapping()
+  public List<OfferDto> get(@RequestParam Optional<Integer> page) {
+    List<OfferDto> offers = advertisementService.getOffers(page);
     offers.forEach(request -> request.updateUserInfo(userService.findById((long) request.getAuthorId())));
     return offers;
   }
 
-  @GetMapping("/{page}")
-  public List<OfferDto> getByPage(@PathVariable int page) {
-    return advertisementService.getOffersByPage(page);
+  @GetMapping("/{id}")
+  public OfferDto getById(@PathVariable Long id) {
+    OfferDto offer = (OfferDto) advertisementService.findById(id);
+    offer.updateUserInfo(userService.findById((long) offer.getAuthorId()));
+    return offer;
   }
-
-//  @GetMapping("{id}")
-//  public OfferDto getById(@RequestParam Long id) {
-//    OfferDto offer = (OfferDto) advertisementService.findById(id);
-//    offer.updateUserInfo(userService.findById((long) offer.getAuthorId()));
-//    return offer;
-//  }
 
   @PostMapping()
   public OfferDto saveOffer(@RequestBody OfferDto offerDto) {

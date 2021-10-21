@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RequestMapping("/requests")
 @RestController
@@ -21,23 +22,18 @@ public class RequestsController {
   }
 
   @GetMapping
-  public List<RequestDto> get() {
-    List<RequestDto> requests = advertisementService.getRequests();
+  public List<RequestDto> get(@RequestParam Optional<Integer> page) {
+    List<RequestDto> requests = advertisementService.getRequests(page);
     requests.forEach(request -> request.updateUserInfo(userService.findById((long) request.getAuthorId())));
     return requests;
   }
 
-  @GetMapping("/{page}")
-  public List<RequestDto> getByPage(@PathVariable int page) {
-    return advertisementService.getRequestsByPage(page);
+  @GetMapping("/{id}")
+  public RequestDto getById(@PathVariable Long id) {
+    RequestDto request = (RequestDto) advertisementService.findById(id);
+    request.updateUserInfo(userService.findById((long) request.getAuthorId()));
+    return request;
   }
-
-//  @GetMapping("{id}")
-//  public RequestDto getById(@RequestParam Long id) {
-//    RequestDto request = (RequestDto) advertisementService.findById(id);
-//    request.updateUserInfo(userService.findById((long) request.getAuthorId()));
-//    return request;
-//  }
 
   @PostMapping()
   public RequestDto saveOffer(@RequestBody RequestDto requestDto) {
