@@ -1,14 +1,15 @@
 package com.example.main.controller;
 
 import com.example.main.dto.OfferDto;
-import com.example.main.dto.RequestDto;
-import com.example.main.model.User;
 import com.example.main.service.AdvertisementService;
 import com.example.main.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RequestMapping("/offers")
 @RestController
@@ -26,14 +27,14 @@ public class OffersController {
   @GetMapping
   public List<OfferDto> get() {
     List<OfferDto> offers = advertisementService.getOffers();
-    offers.forEach(request -> request.setUser(userService.findById((long) request.getAuthorId())));
+    offers.forEach(request -> request.updateUserInfo(userService.findById((long) request.getAuthorId())));
     return offers;
   }
 
   @GetMapping("/{id}")
   public OfferDto getById(@PathVariable Long id) {
     OfferDto offer = (OfferDto) advertisementService.findById(id);
-    offer.setUser(userService.findById((long) offer.getAuthorId()));
+    offer.updateUserInfo(userService.findById((long) offer.getAuthorId()));
     return offer;
   }
 

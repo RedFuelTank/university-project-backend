@@ -1,8 +1,6 @@
 package com.example.main.controller;
 
-import com.example.main.dto.OfferDto;
 import com.example.main.dto.RequestDto;
-import com.example.main.model.User;
 import com.example.main.service.AdvertisementService;
 import com.example.main.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,14 +23,14 @@ public class RequestsController {
   @GetMapping
   public List<RequestDto> get() {
     List<RequestDto> requests = advertisementService.getRequests();
-    requests.forEach(request -> request.setUser(userService.findById((long) request.getAuthorId())));
+    requests.forEach(request -> request.updateUserInfo(userService.findById((long) request.getAuthorId())));
     return requests;
   }
 
   @GetMapping("/{id}")
   public RequestDto getById(@PathVariable Long id) {
     RequestDto request = (RequestDto) advertisementService.findById(id);
-    request.setUser(userService.findById((long) request.getAuthorId()));
+    request.updateUserInfo(userService.findById((long) request.getAuthorId()));
     return request;
   }
 

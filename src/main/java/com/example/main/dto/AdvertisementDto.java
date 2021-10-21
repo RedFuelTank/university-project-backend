@@ -1,7 +1,5 @@
 package com.example.main.dto;
 
-import com.example.main.model.User;
-
 public abstract class AdvertisementDto {
   private Long id;
   private String title;
@@ -84,7 +82,7 @@ public abstract class AdvertisementDto {
     this.name = name;
   }
 
-  public void setUser(UserDto user) {
+  public void updateUserInfo(UserDto user) {
     setName(user.getName() + " " + user.getSurname());
     user.getEmail().ifPresent(this::setAuthorEmail);
     user.getPhoneNumber().ifPresent(this::setAuthorPhoneNumber);
