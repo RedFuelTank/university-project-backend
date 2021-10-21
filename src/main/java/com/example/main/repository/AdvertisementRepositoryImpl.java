@@ -12,7 +12,6 @@ public class AdvertisementRepositoryImpl implements AdvertisementRepositoryCusto
     @PersistenceContext
     private EntityManager entityManager;
 
-
     @Override
     public List<Advertisement> getAllOffers() {
         Query query = entityManager.createQuery("select u from Advertisement u where u.type = 1", Advertisement.class);

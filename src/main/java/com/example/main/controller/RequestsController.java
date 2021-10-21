@@ -27,12 +27,17 @@ public class RequestsController {
     return requests;
   }
 
-  @GetMapping("/{id}")
-  public RequestDto getById(@PathVariable Long id) {
-    RequestDto request = (RequestDto) advertisementService.findById(id);
-    request.updateUserInfo(userService.findById((long) request.getAuthorId()));
-    return request;
+  @GetMapping("/{page}")
+  public List<RequestDto> getByPage(@PathVariable int page) {
+    return advertisementService.getRequestsByPage(page);
   }
+
+//  @GetMapping()
+//  public RequestDto getById(@RequestParam Long id) {
+//    RequestDto request = (RequestDto) advertisementService.findById(id);
+//    request.updateUserInfo(userService.findById((long) request.getAuthorId()));
+//    return request;
+//  }
 
   @PostMapping()
   public RequestDto saveOffer(@RequestBody RequestDto requestDto) {

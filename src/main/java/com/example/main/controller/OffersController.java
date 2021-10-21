@@ -31,12 +31,17 @@ public class OffersController {
     return offers;
   }
 
-  @GetMapping("/{id}")
-  public OfferDto getById(@PathVariable Long id) {
-    OfferDto offer = (OfferDto) advertisementService.findById(id);
-    offer.updateUserInfo(userService.findById((long) offer.getAuthorId()));
-    return offer;
+  @GetMapping("/{page}")
+  public List<OfferDto> getByPage(@PathVariable int page) {
+    return advertisementService.getOffersByPage(page);
   }
+
+//  @GetMapping()
+//  public OfferDto getById(@RequestParam Long id) {
+//    OfferDto offer = (OfferDto) advertisementService.findById(id);
+//    offer.updateUserInfo(userService.findById((long) offer.getAuthorId()));
+//    return offer;
+//  }
 
   @PostMapping()
   public OfferDto saveOffer(@RequestBody OfferDto offerDto) {

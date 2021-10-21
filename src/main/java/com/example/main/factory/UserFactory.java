@@ -1,6 +1,5 @@
 package com.example.main.factory;
 
-import com.example.main.builder.ClientBuilder;
 import com.example.main.builder.UserBuilder;
 import com.example.main.builder.UserDtoBuilder;
 import com.example.main.dto.RegistrationDto;
