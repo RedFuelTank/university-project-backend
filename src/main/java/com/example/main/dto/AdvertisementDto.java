@@ -11,6 +11,10 @@ public abstract class AdvertisementDto {
   private String authorPhoneNumber;
   private String name;
 
+  private double lat;
+  private double lng;
+  private String address;
+
   public AdvertisementDto(Long id, String title, String description, int authorId) {
     this.id = id;
     this.title = title;
@@ -80,6 +84,30 @@ public abstract class AdvertisementDto {
 
   public void setName(String name) {
     this.name = name;
+  }
+
+  public double getLat() {
+    return lat;
+  }
+
+  public void setLat(double lat) {
+    this.lat = lat;
+  }
+
+  public double getLng() {
+    return lng;
+  }
+
+  public void setLng(double lng) {
+    this.lng = lng;
+  }
+
+  public String getAddress() {
+    return address;
+  }
+
+  public void setAddress(String address) {
+    this.address = address;
   }
 
   public void updateUserInfo(UserDto user) {
