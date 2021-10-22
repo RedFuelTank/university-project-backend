@@ -15,6 +15,9 @@ public abstract class AdvertisementDto {
   private double lng;
   private String address;
 
+  private String startDate;
+  private String expirationDate;
+
   public AdvertisementDto(Long id, String title, String description, int authorId) {
     this.id = id;
     this.title = title;
@@ -108,6 +111,22 @@ public abstract class AdvertisementDto {
 
   public void setAddress(String address) {
     this.address = address;
+  }
+
+  public String getStartDate() {
+    return startDate;
+  }
+
+  public void setStartDate(String startDate) {
+    this.startDate = startDate;
+  }
+
+  public String getExpirationDate() {
+    return expirationDate;
+  }
+
+  public void setExpirationDate(String expirationDate) {
+    this.expirationDate = expirationDate;
   }
 
   public void updateUserInfo(UserDto user) {
