@@ -6,8 +6,12 @@ import com.example.main.model.Advertisement;
 
 public class AdvertisementFactory {
   public static OfferDto createOfferDto(Advertisement advertisement) {
-    return new OfferDto(advertisement.getId(), advertisement.getTitle(), advertisement.getDescription(),
-      advertisement.getAuthorId());
+    OfferDto offerDto = new OfferDto(advertisement.getId(), advertisement.getTitle(), advertisement.getDescription(),
+            advertisement.getAuthorId());
+    offerDto.setLat(advertisement.getLat());
+    offerDto.setLng(advertisement.getLng());
+    offerDto.setAddress(advertisement.getAddress());
+    return offerDto;
   }
 
   public static Advertisement createOffer(OfferDto offerDto) {
@@ -15,8 +19,12 @@ public class AdvertisementFactory {
   }
 
   public static RequestDto createRequestDto(Advertisement advertisement) {
-    return new RequestDto(advertisement.getId(), advertisement.getTitle(), advertisement.getDescription(),
-      advertisement.getAuthorId());
+    RequestDto requestDto = new RequestDto(advertisement.getId(), advertisement.getTitle(), advertisement.getDescription(),
+            advertisement.getAuthorId());
+    requestDto.setLat(advertisement.getLat());
+    requestDto.setLng(advertisement.getLng());
+    requestDto.setAddress(advertisement.getAddress());
+    return requestDto;
   }
 
   public static Advertisement createRequest(RequestDto requestDto) {
