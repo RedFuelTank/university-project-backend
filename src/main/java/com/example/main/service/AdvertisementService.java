@@ -10,7 +10,6 @@ import com.example.main.model.Advertisement;
 import com.example.main.repository.AdvertisementRepository;
 import com.example.main.service.exception.AdvertisementNotFoundException;
 import com.example.main.service.exception.PageNotFoundException;
-import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -107,32 +106,6 @@ public class AdvertisementService {
     return ads.subList(startIndex, endIndex);
   }
 
-  public List<OfferDto> getOffersByPage(int page) {
-    return getOffersByPage(page, advertisementRepository.getAllOffers());
-  }
-
-  public List<OfferDto> getOffersByPage(int page, List<Advertisement> ads) {
-    List<Advertisement> offers = getAdvertisementsByPage(ads, page);
-    List<OfferDto> offerDtos = offers.stream()
-            .map(AdvertisementFactory::createOfferDto)
-            .collect(Collectors.toList());
-    offerDtos.forEach(o -> o.updateUserInfo(userService.findById((long) o.getAuthorId())));
-    return offerDtos;
-  }
-
-  public List<RequestDto> getRequestsByPage(int page) {
-    return getRequestsByPage(page, advertisementRepository.getAllRequests());
-  }
-
-  public List<RequestDto> getRequestsByPage(int page, List<Advertisement> ads) {
-    List<Advertisement> requests = getAdvertisementsByPage(ads, page);
-    List<RequestDto> requestDtos = requests.stream()
-            .map(AdvertisementFactory::createRequestDto)
-            .collect(Collectors.toList());
-    requestDtos.forEach(r -> r.updateUserInfo(userService.findById((long) r.getAuthorId())));
-    return requestDtos;
-  }
-
   public OfferDto save(OfferDto offerDto) {
     Advertisement offer = advertisementRepository.save(AdvertisementFactory.createOffer(offerDto));
     return (OfferDto) findById(offer.getId());
@@ -146,6 +119,4 @@ public class AdvertisementService {
   public void delete(Long id) {
     advertisementRepository.deleteById(id);
   }
-
-
 }
