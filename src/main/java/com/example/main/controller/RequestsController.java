@@ -3,6 +3,7 @@ package com.example.main.controller;
 import com.example.main.dto.RequestDto;
 import com.example.main.service.AdvertisementService;
 import com.example.main.service.UserService;
+import com.example.main.service.exception.AdvertisementNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -37,9 +38,13 @@ public class RequestsController {
 
     @GetMapping("/{id}")
     public RequestDto getById(@PathVariable Long id) {
-        RequestDto request = (RequestDto) advertisementService.findById(id);
-        request.updateUserInfo(userService.findById((long) request.getAuthorId()));
-        return request;
+        try {
+            RequestDto request = (RequestDto) advertisementService.findById(id);
+            request.updateUserInfo(userService.findById((long) request.getAuthorId()));
+            return request;
+        } catch (ClassCastException e) {
+            throw new AdvertisementNotFoundException();
+        }
     }
 
     @PostMapping()
