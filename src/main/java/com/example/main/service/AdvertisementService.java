@@ -5,7 +5,6 @@ import com.example.main.dto.OfferDto;
 import com.example.main.dto.RequestDto;
 import com.example.main.factory.AdvertisementFactory;
 import com.example.main.model.Advertisement;
-import com.example.main.model.User;
 import com.example.main.repository.AdvertisementRepository;
 import com.example.main.service.exception.AdvertisementNotFoundException;
 import com.example.main.service.exception.PageNotFoundException;
@@ -65,48 +64,37 @@ public class AdvertisementService {
     return advertisementRepository.findById(id).orElseThrow(AdvertisementNotFoundException::new);
   }
 
-  public List<OfferDto> getOffersByPage(int page) {
-    List<Advertisement> offers = advertisementRepository.getAllOffers();
+  public List<Advertisement> getAdvertisementsByPage(List<Advertisement> ads, int page) {
     int startIndex = (page - 1) * ADVERTISEMENTS_ON_ONE_PAGE;
     int endIndex = page * ADVERTISEMENTS_ON_ONE_PAGE;
-    if (startIndex >= offers.size()) {
+
+    if (startIndex >= ads.size()) {
       throw new PageNotFoundException();
     }
 
-    if (endIndex >= offers.size()) {
-      endIndex = offers.size();
+    if (endIndex >= ads.size()) {
+      endIndex = ads.size();
     }
 
-    List<OfferDto> offersDtos = offers
-      .subList(startIndex, endIndex).stream()
-      .map(AdvertisementFactory::createOfferDto)
-      .collect(Collectors.toList());
+    return ads.subList(startIndex, endIndex);
+  }
 
-    offersDtos.forEach(o -> o.updateUserInfo(userService.findById((long) o.getAuthorId())));
-
-    return offersDtos;
+  public List<OfferDto> getOffersByPage(int page) {
+    List<Advertisement> offers = getAdvertisementsByPage(advertisementRepository.getAllOffers(), page);
+    List<OfferDto> offerDtos = offers.stream()
+            .map(AdvertisementFactory::createOfferDto)
+            .collect(Collectors.toList());
+    offerDtos.forEach(o -> o.updateUserInfo(userService.findById((long) o.getAuthorId())));
+    return offerDtos;
   }
 
   public List<RequestDto> getRequestsByPage(int page) {
-    List<Advertisement> requests = advertisementRepository.getAllRequests();
-    int startIndex = (page - 1) * ADVERTISEMENTS_ON_ONE_PAGE;
-    int endIndex = page * ADVERTISEMENTS_ON_ONE_PAGE;
-    if (startIndex >= requests.size()) {
-      throw new PageNotFoundException();
-    }
-
-    if (endIndex >= requests.size()) {
-      endIndex = requests.size();
-    }
-
-    List<RequestDto> requestsDtos = requests
-      .subList(startIndex, endIndex).stream()
-      .map(AdvertisementFactory::createRequestDto)
-      .collect(Collectors.toList());
-
-    requestsDtos.forEach(r -> r.updateUserInfo(userService.findById((long) r.getAuthorId())));
-
-    return requestsDtos;
+    List<Advertisement> requests = getAdvertisementsByPage(advertisementRepository.getAllRequests(), page);
+    List<RequestDto> requestDtos = requests.stream()
+            .map(AdvertisementFactory::createRequestDto)
+            .collect(Collectors.toList());
+    requestDtos.forEach(r -> r.updateUserInfo(userService.findById((long) r.getAuthorId())));
+    return requestDtos;
   }
 
   public OfferDto save(OfferDto offerDto) {
