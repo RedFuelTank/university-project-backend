@@ -22,8 +22,10 @@ public class RequestsController {
   }
 
   @GetMapping
-  public List<RequestDto> get(@RequestParam Optional<Integer> page) {
-    List<RequestDto> requests = advertisementService.getRequests(page);
+  public List<RequestDto> get(@RequestParam Optional<Integer> page,
+                              @RequestParam(required = false) Optional<String> startDate,
+                              @RequestParam(required = false) Optional<String> expireDate) {
+    List<RequestDto> requests = advertisementService.getRequests(page, startDate, expireDate);
     requests.forEach(request -> request.updateUserInfo(userService.findById((long) request.getAuthorId())));
     return requests;
   }
