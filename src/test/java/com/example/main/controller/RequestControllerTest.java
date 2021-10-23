@@ -32,6 +32,6 @@ public class RequestControllerTest {
                 .andReturn();
         String contentAsString = result.getResponse().getContentAsString();
         List<RequestDto> RequestDtos = objectMapper.readValue(contentAsString, new TypeReference<>() {});
-        assertEquals(1, RequestDtos.size());
+        assertEquals(18, RequestDtos.size());
     }
 }

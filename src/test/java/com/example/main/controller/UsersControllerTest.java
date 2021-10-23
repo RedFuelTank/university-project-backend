@@ -43,7 +43,7 @@ class UsersControllerTest {
       .andReturn();
     String contentAsString = result.getResponse().getContentAsString();
     List<UserDto> user = objectMapper.readValue(contentAsString, new TypeReference<>() {});
-    assertEquals(1, user.size());
+    assertEquals(2, user.size());
   }
 
   @Test
@@ -51,7 +51,7 @@ class UsersControllerTest {
     RegistrationDto newUser = new RegistrationDto("Owl", "qwerty", "owl@goodmail.com",
             "Ed", "Grey", "45679078");
     User user = UserFactory.createUser(newUser);
-    user.setId(2L); // new user after being added to database should have ID as 2, as it is the second user in the DB
+    user.setId(3L); // new user after being added to database should have ID as 3, as it is the third user in the DB
     String userDtoJson = objectMapper.writeValueAsString(UserFactory.createUserDto(user));
     MvcResult postResult = mockMvc.perform(MockMvcRequestBuilders.post("/users")
             .contentType(MediaType.APPLICATION_JSON)
@@ -66,7 +66,7 @@ class UsersControllerTest {
             .andReturn();
     String contentAsString = getResult.getResponse().getContentAsString();
     List<UserDto> users = objectMapper.readValue(contentAsString, new TypeReference<>() {});
-    assertEquals(2, users.size());
+    assertEquals(3, users.size());
   }
 
   @Test
@@ -91,45 +91,42 @@ class UsersControllerTest {
             .andReturn();
     String contentAsString = getResult.getResponse().getContentAsString();
     List<UserDto> users = objectMapper.readValue(contentAsString, new TypeReference<>() {});
-    assertEquals(5, users.size()); // as we already had two users with previous test, we add 3 more and get 5
+    assertEquals(6, users.size()); // as we already had two users with previous test, we add 3 more and get 5
   }
 
   @Test
-  void testAddingNewUserGivesErrorIfUsernameBlank() throws Exception {
+  void testAddingNewUserGivesErrorIfUsernameBlank() {
     RegistrationDto newUser = new RegistrationDto("", "qwerty", "owl@goodmail.com",
             "Hondo", "Grey", "45679078");
-    Exception exception = assertThrows(NestedServletException.class, () -> {
-      mockMvc.perform(MockMvcRequestBuilders.post("/users")
-              .contentType(MediaType.APPLICATION_JSON)
-              .content(objectMapper.writeValueAsString(newUser)))
-              .andExpect(status().isInternalServerError());
-    });
+    Exception exception = assertThrows(NestedServletException.class, () ->
+            mockMvc.perform(MockMvcRequestBuilders.post("/users")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(objectMapper.writeValueAsString(newUser)))
+            .andExpect(status().isInternalServerError()));
     assertEquals(exception.getCause().getClass(), BadUsernameException.class);
   }
 
   @Test
-  void testAddingNewUserGivesErrorIfNameBlank() throws Exception {
+  void testAddingNewUserGivesErrorIfNameBlank() {
     RegistrationDto newUser = new RegistrationDto("Mine", "qwerty", "owl@goodmail.com",
             "", "Grey", "45679078");
-    Exception exception = assertThrows(NestedServletException.class, () -> {
-      mockMvc.perform(MockMvcRequestBuilders.post("/users")
-              .contentType(MediaType.APPLICATION_JSON)
-              .content(objectMapper.writeValueAsString(newUser)))
-              .andExpect(status().isInternalServerError());
-    });
+    Exception exception = assertThrows(NestedServletException.class, () ->
+            mockMvc.perform(MockMvcRequestBuilders.post("/users")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(objectMapper.writeValueAsString(newUser)))
+            .andExpect(status().isInternalServerError()));
     assertEquals(exception.getCause().getClass(), BadNameException.class);
   }
 
   @Test
-  void testAddingNewUserGivesErrorIfSurnameBlank() throws Exception {
+  void testAddingNewUserGivesErrorIfSurnameBlank() {
     RegistrationDto newUser = new RegistrationDto("Waaat", "qwerty", "owl@goodmail.com",
             "Mondo", "", "45679078");
-    Exception exception = assertThrows(NestedServletException.class, () -> {
-      mockMvc.perform(MockMvcRequestBuilders.post("/users")
-              .contentType(MediaType.APPLICATION_JSON)
-              .content(objectMapper.writeValueAsString(newUser)))
-              .andExpect(status().isInternalServerError());
-    });
+    Exception exception = assertThrows(NestedServletException.class, () ->
+            mockMvc.perform(MockMvcRequestBuilders.post("/users")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(objectMapper.writeValueAsString(newUser)))
+            .andExpect(status().isInternalServerError()));
     assertEquals(exception.getCause().getClass(), BadSurnameException.class);
   }
 }
