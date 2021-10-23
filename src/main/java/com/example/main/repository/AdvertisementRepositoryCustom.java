@@ -10,4 +10,8 @@ public interface AdvertisementRepositoryCustom {
     List<Advertisement> getAllOffers();
 
     List<Advertisement> getAllRequests();
+
+    List<Advertisement> getAllOffersByAuthorId(Long authorId);
+
+    List<Advertisement> getAllRequestByAuthorId(Long authorId);
 }

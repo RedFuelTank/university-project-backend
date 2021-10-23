@@ -1,6 +1,7 @@
 package com.example.main.controller;
 
 import com.example.main.dto.OfferDto;
+import com.example.main.dto.RequestDto;
 import com.example.main.service.AdvertisementService;
 import com.example.main.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +40,11 @@ public class OffersController {
     OfferDto offer = (OfferDto) advertisementService.findById(id);
     offer.updateUserInfo(userService.findById((long) offer.getAuthorId()));
     return offer;
+  }
+
+  @GetMapping("/authorId/{authorId}")
+  public List<OfferDto> getByAuthorId(@PathVariable Long authorId) {
+    return advertisementService.getOffersByAuthorId(authorId);
   }
 
   @PostMapping()
