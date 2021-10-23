@@ -35,7 +35,6 @@ class UsersControllerTest {
   ObjectMapper objectMapper;
 
 
-
   @Test
   void getUsersListOfUsersTest() throws Exception {
     MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("/users"))
@@ -43,7 +42,7 @@ class UsersControllerTest {
       .andReturn();
     String contentAsString = result.getResponse().getContentAsString();
     List<UserDto> user = objectMapper.readValue(contentAsString, new TypeReference<>() {});
-    assertEquals(1, user.size());
+    assertEquals(2, user.size());
   }
 
   @Test
@@ -51,7 +50,7 @@ class UsersControllerTest {
     RegistrationDto newUser = new RegistrationDto("Owl", "qwerty", "owl@goodmail.com",
             "Ed", "Grey", "45679078");
     User user = UserFactory.createUser(newUser);
-    user.setId(2L); // new user after being added to database should have ID as 2, as it is the second user in the DB
+    user.setId(3L); // new user after being added to database should have ID as 2, as it is the second user in the DB
     String userDtoJson = objectMapper.writeValueAsString(UserFactory.createUserDto(user));
     MvcResult postResult = mockMvc.perform(MockMvcRequestBuilders.post("/users")
             .contentType(MediaType.APPLICATION_JSON)
@@ -66,7 +65,7 @@ class UsersControllerTest {
             .andReturn();
     String contentAsString = getResult.getResponse().getContentAsString();
     List<UserDto> users = objectMapper.readValue(contentAsString, new TypeReference<>() {});
-    assertEquals(2, users.size());
+    assertEquals(3, users.size());
   }
 
   @Test
@@ -91,7 +90,7 @@ class UsersControllerTest {
             .andReturn();
     String contentAsString = getResult.getResponse().getContentAsString();
     List<UserDto> users = objectMapper.readValue(contentAsString, new TypeReference<>() {});
-    assertEquals(5, users.size()); // as we already had two users with previous test, we add 3 more and get 5
+    assertEquals(6, users.size()); // as we already had two users with previous test, we add 3 more and get 5
   }
 
   @Test

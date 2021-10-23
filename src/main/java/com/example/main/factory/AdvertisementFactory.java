@@ -32,7 +32,7 @@ public class AdvertisementFactory {
   }
 
   public static Advertisement createRequest(RequestDto requestDto) {
-    return new Advertisement(requestDto.getTitle(), requestDto.getDescription(), requestDto.getAuthorId(), requestDto.getLat(), requestDto.getLng(), requestDto.getExpirationDate(), requestDto.getAddress(),
+    return new Advertisement(requestDto.getTitle(), requestDto.getDescription(), requestDto.getAuthorId(), requestDto.getLat(), requestDto.getLng(), requestDto.getAddress(), requestDto.getExpirationDate(),
       Advertisement.Type.REQUEST);
   }
 }

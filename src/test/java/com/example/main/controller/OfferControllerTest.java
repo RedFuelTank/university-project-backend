@@ -1,5 +1,6 @@
 package com.example.main.controller;
 
+import com.example.main.Application;
 import com.example.main.dto.OfferDto;
 import com.example.main.dto.RegistrationDto;
 import com.example.main.dto.UserDto;
@@ -25,7 +26,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class OfferControllerTest {
+class OfferControllerTest {
 
     @Autowired
     MockMvc mockMvc;
@@ -33,13 +34,35 @@ public class OfferControllerTest {
     ObjectMapper objectMapper;
 
     @Test
-    void getUsersListOfUsersTest() throws Exception {
+    void getOfferListTest() throws Exception {
         MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("/offers"))
                 .andExpect(status().isOk())
                 .andReturn();
         String contentAsString = result.getResponse().getContentAsString();
         List<OfferDto> offerDtos = objectMapper.readValue(contentAsString, new TypeReference<>() {});
-        assertEquals(1, offerDtos.size());
+        assertEquals(2, offerDtos.size());
+    }
+
+    @Test
+    void testCanAddNewOffer() throws Exception {
+        Advertisement offer = new Advertisement("Will complete project for us", "10^10 euro",
+                1, 0, 0, "", "25-11-2023", Advertisement.Type.OFFER);
+        offer.setId(5L);
+        String offerDtoJson = objectMapper.writeValueAsString(AdvertisementFactory.createOfferDto(offer));
+        MvcResult postResult = mockMvc.perform(MockMvcRequestBuilders.post("/offers")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(offer)))
+                .andExpect(status().isOk())
+                .andReturn();
+        String resultOfferDtoJson = postResult.getResponse().getContentAsString();
+        assertEquals(offerDtoJson, resultOfferDtoJson);
+
+        MvcResult getResult = mockMvc.perform(MockMvcRequestBuilders.get("/offers"))
+                .andExpect(status().isOk())
+                .andReturn();
+        String contentAsString = getResult.getResponse().getContentAsString();
+        List<OfferDto> users = objectMapper.readValue(contentAsString, new TypeReference<>() {});
+        assertEquals(2, users.size());
     }
 
 }
