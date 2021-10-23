@@ -28,15 +28,15 @@ public class AdvertisementFilterTests {
     }
 
     @Test
-    void testFilterByDateSimple() throws IncorrectDateException {
-        assertEquals(ads.subList(0, 2), filter.filterByDate(ads, "20-10-2021", "20-10-2023"));
-        assertEquals(ads.subList(1, 2), filter.filterByDate(ads, "20-10-2021", "29-10-2021"));
+    void testFilterByExpirationDateSimple() throws IncorrectDateException {
+        assertEquals(ads.subList(0, 2), filter.filterByExpirationDate(ads, "20-10-2023"));
+        assertEquals(ads.subList(1, 2), filter.filterByExpirationDate(ads, "29-10-2021"));
     }
 
     @Test
-    void testFilterByDateGivesExceptionIfStartOrExpirationDatesAreIncorrect() {
-        assertThrows(IncorrectDateException.class, () -> filter.filterByDate(ads, "222-05-2021", "20-10-2023"));
-        assertThrows(IncorrectDateException.class, () -> filter.filterByDate(ads, "32-05-2021", "20-10-2023"));
-        assertThrows(IncorrectDateException.class, () -> filter.filterByDate(ads, "05-05-2021", "20-100-2023"));
+    void testFilterByExpirationDateGivesExceptionDateIsIncorrect() {
+        assertThrows(IncorrectDateException.class, () -> filter.filterByExpirationDate(ads, "20052023"));
+        assertThrows(IncorrectDateException.class, () -> filter.filterByExpirationDate(ads, "39-05-2023"));
+        assertThrows(IncorrectDateException.class, () -> filter.filterByExpirationDate(ads, "20-100-2023"));
     }
 }
