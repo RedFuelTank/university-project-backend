@@ -4,6 +4,8 @@ import com.example.main.dto.AdvertisementDto;
 import com.example.main.dto.OfferDto;
 import com.example.main.dto.RequestDto;
 import com.example.main.factory.AdvertisementFactory;
+import com.example.main.filter.AdvertisementFilter;
+import com.example.main.filter.exception.IncorrectDateException;
 import com.example.main.model.Advertisement;
 import com.example.main.repository.AdvertisementRepository;
 import com.example.main.service.exception.AdvertisementNotFoundException;
@@ -20,23 +22,48 @@ public class AdvertisementService {
   public static final int ADVERTISEMENTS_ON_ONE_PAGE = 15;
   private AdvertisementRepository advertisementRepository;
   private UserService userService;
+  private final AdvertisementFilter filter = new AdvertisementFilter();
 
-  public List<OfferDto> getOffers(Optional<Integer> page) {
-    if (page.isPresent()) {
-      return getOffersByPage(page.get());
-    }
+  public List<OfferDto> getOffers(Optional<Integer> page,
+                                  Optional<String> startDate,
+                                  Optional<String> expireDate) {
 
-    return advertisementRepository.getAllOffers().stream()
-      .map(this::convertAdvertisementToOfferDto).collect(Collectors.toList());
+    List<Advertisement> offers = getFilteredAdvertisements(advertisementRepository.getAllOffers(),
+            page, startDate, expireDate);
+    return offers.stream().map(this::convertAdvertisementToOfferDto).collect(Collectors.toList());
   }
 
-  public List<RequestDto> getRequests(Optional<Integer> page) {
+  public List<RequestDto> getRequests(Optional<Integer> page,
+                                      Optional<String> startDate,
+                                      Optional<String> expireDate) {
+    List<Advertisement> requests = getFilteredAdvertisements(advertisementRepository.getAllRequests(),
+            page, startDate, expireDate);
+    return requests.stream().map(this::convertAdvertisementToRequestDto).collect(Collectors.toList());
+  }
+
+  private List<Advertisement> getFilteredAdvertisements(List<Advertisement> ads,
+                                           Optional<Integer> page,
+                                           Optional<String> startDate,
+                                           Optional<String> expireDate) {
+    if (startDate.isPresent()) {
+      try {
+        ads = filter.filterByStartDate(ads, startDate.get());
+      } catch (IncorrectDateException e) {
+        System.out.println("Incorrect start date.");
+      }
+    }
+    if (expireDate.isPresent()) {
+      try {
+        ads = filter.filterByExpirationDate(ads, expireDate.get());
+      } catch (IncorrectDateException e) {
+        System.out.println("Incorrect expiration date.");
+      }
+    }
     if (page.isPresent()) {
-      return getRequestsByPage(page.get());
+      ads = getAdvertisementsByPage(ads, page.get());
     }
 
-    return advertisementRepository.getAllRequests().stream()
-      .map(this::convertAdvertisementToRequestDto).collect(Collectors.toList());
+    return ads;
   }
 
   private RequestDto convertAdvertisementToRequestDto(Advertisement advertisement) {
@@ -79,32 +106,6 @@ public class AdvertisementService {
     return ads.subList(startIndex, endIndex);
   }
 
-  public List<OfferDto> getOffersByPage(int page) {
-    return getOffersByPage(page, advertisementRepository.getAllOffers());
-  }
-
-  public List<OfferDto> getOffersByPage(int page, List<Advertisement> ads) {
-    List<Advertisement> offers = getAdvertisementsByPage(ads, page);
-    List<OfferDto> offerDtos = offers.stream()
-            .map(AdvertisementFactory::createOfferDto)
-            .collect(Collectors.toList());
-    offerDtos.forEach(o -> o.updateUserInfo(userService.findById((long) o.getAuthorId())));
-    return offerDtos;
-  }
-
-  public List<RequestDto> getRequestsByPage(int page) {
-    return getRequestsByPage(page, advertisementRepository.getAllRequests());
-  }
-
-  public List<RequestDto> getRequestsByPage(int page, List<Advertisement> ads) {
-    List<Advertisement> requests = getAdvertisementsByPage(ads, page);
-    List<RequestDto> requestDtos = requests.stream()
-            .map(AdvertisementFactory::createRequestDto)
-            .collect(Collectors.toList());
-    requestDtos.forEach(r -> r.updateUserInfo(userService.findById((long) r.getAuthorId())));
-    return requestDtos;
-  }
-
   public OfferDto save(OfferDto offerDto) {
     Advertisement offer = advertisementRepository.save(AdvertisementFactory.createOffer(offerDto));
     return (OfferDto) findById(offer.getId());
@@ -118,6 +119,4 @@ public class AdvertisementService {
   public void delete(Long id) {
     advertisementRepository.deleteById(id);
   }
-
-
 }

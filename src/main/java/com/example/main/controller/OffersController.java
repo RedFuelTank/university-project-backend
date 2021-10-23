@@ -26,8 +26,10 @@ public class OffersController {
   }
 
   @GetMapping()
-  public List<OfferDto> get(@RequestParam Optional<Integer> page) {
-    List<OfferDto> offers = advertisementService.getOffers(page);
+  public List<OfferDto> get(@RequestParam Optional<Integer> page,
+                            @RequestParam(required = false) Optional<String> startDate,
+                            @RequestParam(required = false) Optional<String> expireDate) {
+    List<OfferDto> offers = advertisementService.getOffers(page, startDate, expireDate);
     offers.forEach(request -> request.updateUserInfo(userService.findById((long) request.getAuthorId())));
     return offers;
   }
