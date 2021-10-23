@@ -80,7 +80,11 @@ public class AdvertisementService {
   }
 
   public List<OfferDto> getOffersByPage(int page) {
-    List<Advertisement> offers = getAdvertisementsByPage(advertisementRepository.getAllOffers(), page);
+    return getOffersByPage(page, advertisementRepository.getAllOffers());
+  }
+
+  public List<OfferDto> getOffersByPage(int page, List<Advertisement> ads) {
+    List<Advertisement> offers = getAdvertisementsByPage(ads, page);
     List<OfferDto> offerDtos = offers.stream()
             .map(AdvertisementFactory::createOfferDto)
             .collect(Collectors.toList());
@@ -89,7 +93,11 @@ public class AdvertisementService {
   }
 
   public List<RequestDto> getRequestsByPage(int page) {
-    List<Advertisement> requests = getAdvertisementsByPage(advertisementRepository.getAllRequests(), page);
+    return getRequestsByPage(page, advertisementRepository.getAllRequests());
+  }
+
+  public List<RequestDto> getRequestsByPage(int page, List<Advertisement> ads) {
+    List<Advertisement> requests = getAdvertisementsByPage(ads, page);
     List<RequestDto> requestDtos = requests.stream()
             .map(AdvertisementFactory::createRequestDto)
             .collect(Collectors.toList());
