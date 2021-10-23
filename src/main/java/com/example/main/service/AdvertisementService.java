@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 
 @Service
 public class AdvertisementService {
-    public static final int ADVERTISEMENTS_ON_ONE_PAGE = 15;
+    public static final int ADVERTISEMENTS_ON_ONE_PAGE = 16;
     private AdvertisementRepository advertisementRepository;
     private UserService userService;
     private final AdvertisementFilter filter = new AdvertisementFilter();
