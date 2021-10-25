@@ -24,6 +24,12 @@ public class AdvertisementService {
   private UserService userService;
   private final AdvertisementFilter filter = new AdvertisementFilter();
 
+  @Autowired
+  public AdvertisementService(AdvertisementRepository advertisementRepository, UserService userService) {
+    this.advertisementRepository = advertisementRepository;
+    this.userService = userService;
+  }
+
   public List<OfferDto> getOffers(Optional<Integer> page,
                                   Optional<String> startDate,
                                   Optional<String> expireDate) {
@@ -72,12 +78,6 @@ public class AdvertisementService {
 
   private OfferDto convertAdvertisementToOfferDto(Advertisement advertisement) {
     return AdvertisementFactory.createOfferDto(advertisement);
-  }
-
-  @Autowired
-  public AdvertisementService(AdvertisementRepository advertisementRepository, UserService userService) {
-    this.advertisementRepository = advertisementRepository;
-    this.userService = userService;
   }
 
   public AdvertisementDto findById(Long id) {
