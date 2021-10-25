@@ -1,10 +1,18 @@
 package com.example.main.dto;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
+
+@Data
+@RequiredArgsConstructor
+@NoArgsConstructor
 public abstract class AdvertisementDto {
-  private Long id;
-  private String title;
-  private String description;
-  private int authorId;
+  @NonNull private Long id;
+  @NonNull private String title;
+  @NonNull private String description;
+  @NonNull private int authorId;
 
   private String authorUsername;
   private String authorEmail;
@@ -17,117 +25,6 @@ public abstract class AdvertisementDto {
 
   private String startDate;
   private String expirationDate;
-
-  public AdvertisementDto(Long id, String title, String description, int authorId) {
-    this.id = id;
-    this.title = title;
-    this.description = description;
-    this.authorId = authorId;
-  }
-
-  public Long getId() {
-    return id;
-  }
-
-  public void setId(Long id) {
-    this.id = id;
-  }
-
-  public String getTitle() {
-    return title;
-  }
-
-  public void setTitle(String title) {
-    this.title = title;
-  }
-
-  public String getDescription() {
-    return description;
-  }
-
-  public void setDescription(String description) {
-    this.description = description;
-  }
-
-  public int getAuthorId() {
-    return authorId;
-  }
-
-  public void setAuthorId(int authorId) {
-    this.authorId = authorId;
-  }
-
-  public String getAuthorUsername() {
-    return authorUsername;
-  }
-
-  public void setAuthorUsername(String authorUsername) {
-    this.authorUsername = authorUsername;
-  }
-
-  public String getAuthorEmail() {
-    return authorEmail;
-  }
-
-  public void setAuthorEmail(String authorEmail) {
-    this.authorEmail = authorEmail;
-  }
-
-  public String getAuthorPhoneNumber() {
-    return authorPhoneNumber;
-  }
-
-  public void setAuthorPhoneNumber(String authorPhoneNumber) {
-    this.authorPhoneNumber = authorPhoneNumber;
-  }
-
-  public String getName() {
-    return name;
-  }
-
-  public void setName(String name) {
-    this.name = name;
-  }
-
-  public double getLat() {
-    return lat;
-  }
-
-  public void setLat(double lat) {
-    this.lat = lat;
-  }
-
-  public double getLng() {
-    return lng;
-  }
-
-  public void setLng(double lng) {
-    this.lng = lng;
-  }
-
-  public String getAddress() {
-    return address;
-  }
-
-  public void setAddress(String address) {
-    this.address = address;
-  }
-
-  public String getStartDate() {
-    return startDate;
-  }
-
-  public void setStartDate(String startDate) {
-    this.startDate = startDate;
-  }
-
-  public String getExpirationDate() {
-    return expirationDate;
-  }
-
-  public void setExpirationDate(String expirationDate) {
-    this.expirationDate = expirationDate;
-  }
 
   public void updateUserInfo(UserDto user) {
     setName(user.getName() + " " + user.getSurname());
