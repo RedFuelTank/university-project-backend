@@ -248,4 +248,83 @@ and in the end of the file add the following line
 gitlab-runner ALL = NOPASSWD: /usr/sbin/service lordi *
 ```
 
-Now the gitlab-runner will be able to use lordi service.
+Now the gitlab-runner will be able to use **lordi** service.
+
+## Setup nginx 
+
+Nginx is a web application which we will be using for our server. 
+
+### Install nginx
+You can install nginx to the server with the following command
+```bash
+sudo apt-get install nginx
+```
+
+Now we will be able to access our website using or public IPv4 - http://13.48.43.39/ - but as nginx is not currently configured, it will be a placeholder page.
+
+For easier editing the config you should go to the directory where it is located with this command
+```bash
+cd /etc/nginx/sites-available
+```
+start editing it with following command
+```bash
+sudo nano default
+```
+and removing all the comments.
+
+### Connect the frontend
+The **nginx** will operate within `/var/www`, so we will create a symlink from our frontend directory to this one using the following command 
+```bash
+sudo ln -s /home/gitlab-runner/front-deployment/ /var/www/front-deployment
+```
+Now we can change the location of the root in the **nginx** config. Once again, navigate to `/etc/nginx/sites-available`, edit `default` and change root there from `root /var/www/html;` to `'`root /var/www/front-deployment;`.
+
+After the change in the config we will have to restart the service. In the future it will have to be restarted after every config change with this command
+```bash
+sudo service nginx restart
+```
+
+http://13.48.43.39/ should now display our frontend
+
+### Fixing breaking URLs on Frontend
+The **nginx** will view whatever is after the / sign as a file to be accessed, and there are no such files, meaning if we will try using, for example, http://13.48.43.39/api/requests, we will get an error. To fix this we have to replace old `location /` in the **nginx** config file with this new one
+```bash
+    location / {
+        index  index.html index.htm;
+        if (!-e $request_filename){
+          rewrite ^(.*)$ /index.html break;
+        }
+    }
+```
+
+### Backend reverse-proxy
+For us to be able to access backend without specifying its port, we will have to add a reverse-proxy to the **nginx** config file. Note, that the following block will have to be located **before** the previous one in the file, as both are responsible for routing, and otherwise the first one will cover all the cases, including those that we are adding right now, effectively overriding it.
+```bash
+        location /api/ {
+            proxy_pass   http://localhost:8080;
+        }
+```
+
+### Final configuration file
+As a result, the final configuration file should look like this
+```bash
+server {
+        listen 80 default_server;
+        listen [::]:80 default_server;
+
+        root /var/www/front-deployment;
+
+        server_name _;
+
+        location /api/ {
+            proxy_pass   http://localhost:8080;
+        }
+
+        location / {
+            index  index.html index.htm;
+            if (!-e $request_filename){
+              rewrite ^(.*)$ /index.html break;
+            }
+        }
+}
+```
