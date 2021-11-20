@@ -6,7 +6,7 @@ stages:
 before_script:
   - export GRADLE_USER_HOME=`pwd`/.gradle
 
-build lordi-test:
+build lordi:
   stage: build
   cache:
     paths:
@@ -16,7 +16,7 @@ build lordi-test:
     paths:
       - build/libs
   tags:
-    - lordi-test
+    - lordi
   script:
     - ./gradlew assemble
 
@@ -27,13 +27,13 @@ build lordi-test:
 #  script:
 #    - ./gradlew check
 
-deploy lordi-test:
+deploy lordi:
   stage: deploy
   only:
     refs:
       - master
   tags:
-    - lordi-test
+    - lordi
   script:
     - mkdir -p ~/api-deployment # mkdir make folder api-deployment ~/ is under current user directory so for gitlab it would be /home/gitlab/api-deployment
     - rm -rf ~/api-deployment/* # rm remove -rf is recursive files from api-deployment
