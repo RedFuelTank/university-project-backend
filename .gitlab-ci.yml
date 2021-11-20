@@ -6,7 +6,7 @@ stages:
 before_script:
   - export GRADLE_USER_HOME=`pwd`/.gradle
 
-build heroes:
+build lordi-test:
   stage: build
   cache:
     paths:
@@ -20,14 +20,14 @@ build heroes:
   script:
     - ./gradlew assemble
 
-test heroes:
-  stage: test
-  tags:
-    - lordi-test
-  script:
-    - ./gradlew check
+#test heroes:
+#  stage: test
+#  tags:
+#    - lordi-test
+#  script:
+#    - ./gradlew check
 
-deploy heroes:
+deploy lordi-test:
   stage: deploy
   only:
     refs:
