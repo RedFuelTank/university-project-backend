@@ -26,7 +26,7 @@ public class ApplicationInit implements CommandLineRunner {
             new Advertisement("I am able to walk with your dog", "I can walk with your dog for 15 euro", 1, 0, 0, "", "25-10-2022", Advertisement.Type.OFFER),
             new Advertisement("Ремонт на кухне", "Срочно требуется какой-нибудь строитель, который может сдлеать ремонт на кухне. В частности поставить новую плиту и микроволновку, Цена за работу 50 евро", 1, 0, 0, "", "25-10-2022", Advertisement.Type.REQUEST),
             new Advertisement("Тиммейты дорогие делайте работу", "БЫСТРО СДЕЛАЛИ СВОИ ФРОНТЕНДЫ И БЭКЕНДЫ ПОРТКИ СВОИ ПОДОБРАЛИ, Я ВАМ ПЛАТИТЬ НЕ БУДУ, МЫ РАБОТАЕМ ЗА ИДЕЮ", 2, 0, 0, "", "25-10-2022", Advertisement.Type.REQUEST),
-            new Advertisement("Request-4", "blank", 2, 0, 0, "", "25-10-2022", Advertisement.Type.REQUEST),
+            new Advertisement("Request-4 - AUTO DEPLOY WORKS", "blank", 2, 0, 0, "", "25-10-2022", Advertisement.Type.REQUEST),
             new Advertisement("Request-5", "blank", 2, 0, 0, "", "10-10-2022", Advertisement.Type.REQUEST),
             new Advertisement("Request-6", "blank", 2, 0, 0, "", "15-10-2022", Advertisement.Type.REQUEST),
             new Advertisement("Request-7", "blank", 2, 0, 0, "", "28-10-2022", Advertisement.Type.REQUEST),
