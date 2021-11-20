@@ -50,4 +50,36 @@ The only problem remaining is that after reboot this will not be saved, the Linu
 echo '/swapfile none swap sw 0 0' | sudo tee -a /etc/fstab
 ```
 
-Now everything is done and you can safely proceed with the rest of the setup.
+Now everything is done, and you can safely proceed with the rest of the setup.
+
+## Gitlab runner
+For the server to be able to get code from the repository, it needs a Gitlab runner, only one will process both Frontend and Backend.
+### Install Gitlab runner
+First you will have to download the files using following command
+```bash
+curl -LJO "https://gitlab-runner-downloads.s3.amazonaws.com/latest/deb/gitlab-runner_amd64.deb"
+```
+You can then use the following command to install it on the server
+```bash
+dpkg -i gitlab-runner_amd64.deb
+```
+
+### Register runners
+For this you will need to get **url** and **token** from both frontend and backend repositories. For each respective repository go to **Settings**, select **CI/CD** there, find **Runners** tab and Expand it. There you will find both url and token, which should be as follows:
+
+#### Backend
+url: `https://gitlab.cs.ttu.ee/`
+
+token: `-9sxx7VfH59rFysAYjTA`
+#### Frontend
+url: `https://gitlab.cs.ttu.ee/`
+
+token: `pYdwQoBtjp99bYxBxoZL`
+
+You will have to run the following command twice, once for Backend and once for Frontend. Use the appropriate url and token for each. It will also ask for:
+* description - enter info which repository this is
+* tags - enter a tag to be used later to use specific runner
+* executor - enter `shell`
+
+### Configuring CI in repositories
+
