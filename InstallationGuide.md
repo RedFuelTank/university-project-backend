@@ -67,11 +67,11 @@ dpkg -i gitlab-runner_amd64.deb
 ### Register runners
 For this you will need to get **url** and **token** from both frontend and backend repositories. For each respective repository go to **Settings**, select **CI/CD** there, find **Runners** tab and Expand it. There you will find both url and token, which should be as follows:
 
-#### Backend
+##### Backend
 url: `https://gitlab.cs.ttu.ee/`
 
 token: `-9sxx7VfH59rFysAYjTA`
-#### Frontend
+##### Frontend
 url: `https://gitlab.cs.ttu.ee/`
 
 token: `pYdwQoBtjp99bYxBxoZL`
@@ -82,4 +82,170 @@ You will have to run the following command twice, once for Backend and once for 
 * executor - enter `shell`
 
 ### Configuring CI in repositories
+For the server to automatically deploy new versions after commit to main branch, we need to add CI files to both repositories. Add them to the project root. Filename `.gitlab-ci.yml`.
 
+##### Backend file content
+```yaml
+stages:
+  - build
+  - test
+  - deploy
+
+before_script:
+  - export GRADLE_USER_HOME=`pwd`/.gradle
+
+build lordi:
+  stage: build
+  cache:
+    paths:
+      - .gradle/wrapper
+      - .gradle/caches
+  artifacts:
+    paths:
+      - build/libs
+  tags:
+    - lordi-test
+  script:
+    - ./gradlew assemble
+
+test heroes:
+  stage: test
+  tags:
+    - lordi-test
+  script:
+    - ./gradlew check
+
+deploy lordi:
+  stage: deploy
+  only:
+    refs:
+      - main
+  tags:
+    - lordi-test
+  script:
+    - mkdir -p ~/api-deployment # mkdir make folder api-deployment ~/ is under current user directory so for gitlab it would be /home/gitlab/api-deployment
+    - rm -rf ~/api-deployment/* # rm remove -rf is recursive files from api-deployment
+    - cp -r build/libs/. ~/api-deployment # cp - copy build/libs is where
+    - sudo service lordi restart  # this requires sudo rights for gitlab user
+```
+
+##### Frontend file content
+```yaml
+stages:
+  - build
+  - deploy
+
+build lordi:
+  stage: build
+  image: node:12-alpine
+  cache:
+    paths:
+      - node_modules
+  artifacts:
+    paths:
+      - dist
+  tags:
+    - lordi-test
+  script:
+    - npm install
+    - npm run build
+
+deploy lordi:
+  stage: deploy
+  only:
+    refs:
+      - main
+  tags:
+    - lordi-test
+  script:
+    - mkdir -p ~/front-deployment
+    - rm -rf ~/front-deployment/*
+    - cp -r dist/iti0302-lordi-frontend/. ~/front-deployment
+```
+
+At this point both will not work, as the server does not yet have **node.js** and **Java**. In backend CI file we are also referring to a service, that doesn't yet exist (**lordi**). Next step is to install them, create lordi service and allow gitlab-runner to use it.
+
+## Install Java for backend
+First we need to get all the info for available updates for the Ubuntu server using following command
+```bash
+sudo apt-get update
+```
+Next we actually have to upgrade our server with the following command
+```bash
+sudo apt-get upgrade
+```
+Finally, we can install the Java itself with this command
+```bash
+sudo apt-get install openjdk-11-jre openjdk-11-jdk
+```
+
+## Install Node.js
+Firstly we once again have to get the required files for installation with the following command
+```bash
+sudo curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
+```
+And then we can actually install it with this
+```bash
+sudo apt-get install -y node.js
+```
+
+## Create lordi service, aka Define backend as Linux service
+First we have to create the service file. For this - navigate to `system` directory using this command
+```bash
+cd /etc/systemd/system/
+```
+and there create the file
+```bash
+sudo touch lordi.service
+```
+
+Use the following command to edit the file
+```bash
+sudo nano lordi.service
+```
+
+and edit its contents to this
+
+```
+[Unit]
+Description=lordi service
+After=network.target
+
+[Service]
+Type=simple
+User=gitlab-runner
+WorkingDirectory=/home/gitlab-runner/api-deployment
+ExecStart=/usr/bin/java -jar lordi-backend.jar
+Restart=on-abort
+
+[Install]
+WantedBy=multi-user.target
+```
+
+Now we need to reload the configuration with the following command
+```bash
+sudo systemctl daemon-reload
+```
+and enable the service
+```bash
+sudo systemctl enable lordi
+```
+
+This will allow to start backend as a Linux service, it will also automatically restart once the server is rebooted. Since we are using the same service in backend **.gitlab-ci.yml**, the **deploy** stage will be able to start the backend. 
+
+To check the service status you can use this command
+```bash
+sudo service lordi status
+```
+
+### Allow gitlab-runner to use this service
+Currently, only root user can use this service, but we need to allow the gitlab-runner user to do so. Go into config with this command
+```bash
+sudo visudo
+```
+and in the end of the file add the following line
+```bash
+gitlab-runner ALL = NOPASSWD: /usr/sbin/service lordi *
+```
+
+Now the gitlab-runner will be able to use lordi service.
