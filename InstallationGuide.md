@@ -340,6 +340,19 @@ After we've done this, we will have to register domain in the **AWS Route 53** b
 
 Now we go back to https://www.freenom.com/ and in our cabinet in **Services** select **My Domains**, there find the required domain and press **Manage Domain**, there open **Management Tools**, **Nameservers**, select custom nameservers and write down them from Hosted zone we created in **AWS Route 53**, from the **NS** type record. 
 
-After saving the changes we should be able to access our website with it's domain name:
+After saving the changes we should be able to access our website with its domain name:
 https://letotherrandomsdoit.ga/
 
+## HTTPS setup
+First we need to install certification bot using this command
+```bash
+sudo apt-get install python3-certbot-nginx
+```
+
+Next we have to get our nginx certified with the following command
+```bash
+sudo certbot --nginx
+```
+During the certification we will have to enter our email, agree to ToS and make a decision to share or not to share our email. After we would need to enter our domain name - `letotherrandomsdoit.ga` and finally decide whether to redirect HTTP traffic to HTTPS. We certainly want this, so option `2` should be selected.
+
+After the installation is completed, the website should use HTTPS.
