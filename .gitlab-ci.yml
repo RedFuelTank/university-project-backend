@@ -31,7 +31,7 @@ deploy lordi:
   stage: deploy
   only:
     refs:
-      - master
+      - main
   tags:
     - lordi-test
   script:
