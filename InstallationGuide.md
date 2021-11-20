@@ -328,3 +328,18 @@ server {
         }
 }
 ```
+
+## Domain
+To get a domain we used https://www.freenom.com/ service. It does not have a way to manually register a new user, so you have to actually register a domain first and in the process it will create a new user.
+
+Sadly, website has a bug. If we check is a domain available, it will display a bunch of options, but if we will try to click on them, they will appear taken. 
+
+To get around this issue we will have to enter full domain - not just `letotherrandomsdoit`, but, for example, `letotherrandomsdoit.ga` - this will actually allow us to take the domain and use it. 
+
+After we've done this, we will have to register domain in the **AWS Route 53** by creating a hosted zone there with the domain name we've got. After we would need to create a new record there, of an **A type**, with the value being our public IPv4. 
+
+Now we go back to https://www.freenom.com/ and in our cabinet in **Services** select **My Domains**, there find the required domain and press **Manage Domain**, there open **Management Tools**, **Nameservers**, select custom nameservers and write down them from Hosted zone we created in **AWS Route 53**, from the **NS** type record. 
+
+After saving the changes we should be able to access our website with it's domain name:
+https://letotherrandomsdoit.ga/
+
