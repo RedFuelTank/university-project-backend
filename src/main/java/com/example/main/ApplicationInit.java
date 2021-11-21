@@ -21,10 +21,6 @@ public class ApplicationInit implements CommandLineRunner {
 
   @Override
   public void run(String... args) {
-    try {
-      advertisementRepository.getAllRequests();
-    }
-    catch (Exception c){
       List<Advertisement> advertisements = List.of(
               new Advertisement("Walk with my dog", "Walk with my dog for 30 euro pls", 1, 0, 0, "", "25-10-2022", Advertisement.Type.REQUEST),
               new Advertisement("I am able to walk with your dog", "I can walk with your dog for 15 euro", 1, 0, 0, "", "25-10-2022", Advertisement.Type.OFFER),
@@ -51,7 +47,6 @@ public class ApplicationInit implements CommandLineRunner {
                       "Danila", "Romanov", "55503565"),
               new User("kilril", "123456789", "kilril.timofejev@gmail.com", "Kirill", "Timofejev", "55555555"));
       userRepository.saveAll(users);
-    }
   }
 }
 
