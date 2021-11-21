@@ -21,7 +21,10 @@ public class ApplicationInit implements CommandLineRunner {
 
   @Override
   public void run(String... args) {
-    if (advertisementRepository.getAllRequests().isEmpty()) {
+    try {
+      advertisementRepository.getAllRequests();
+    }
+    catch (Exception c){
       List<Advertisement> advertisements = List.of(
               new Advertisement("Walk with my dog", "Walk with my dog for 30 euro pls", 1, 0, 0, "", "25-10-2022", Advertisement.Type.REQUEST),
               new Advertisement("I am able to walk with your dog", "I can walk with your dog for 15 euro", 1, 0, 0, "", "25-10-2022", Advertisement.Type.OFFER),
