@@ -68,13 +68,11 @@ dpkg -i gitlab-runner_amd64.deb
 For this you will need to get **url** and **token** from both frontend and backend repositories. For each respective repository go to **Settings**, select **CI/CD** there, find **Runners** tab and Expand it. There you will find both url and token, which should be as follows:
 
 ##### Backend
-url: `https://gitlab.cs.ttu.ee/`
-
-token: `-9sxx7VfH59rFysAYjTA`
+* url: `https://gitlab.cs.ttu.ee/`
+* token: `-9sxx7VfH59rFysAYjTA`
 ##### Frontend
-url: `https://gitlab.cs.ttu.ee/`
-
-token: `pYdwQoBtjp99bYxBxoZL`
+* url: `https://gitlab.cs.ttu.ee/`
+* token: `pYdwQoBtjp99bYxBxoZL`
 
 You will have to run the following command twice, once for Backend and once for Frontend. Use the appropriate url and token for each. It will also ask for:
 * description - enter info which repository this is
