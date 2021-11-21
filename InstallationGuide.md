@@ -29,22 +29,27 @@ To create swap space we first need to create a swapfile with 2 GB size using fol
 ```bash
 sudo fallocate -l 2G /swapfile
 ```
+
 We should allow only root to read and write to the file, with this command
 ```bash
 sudo chmod 600 /swapfile
 ```
+
 Next we tell Linux it can use this file as swap space with following command
 ```bash
 sudo mkswap /swapfile
 ```
+
 Now we have to tell Linux to actually use it
 ```bash
 sudo swapon /swapfile
 ```
+
 At this point it is done, you can check with the following command if the swap space is correct
 ```bash
 swapon --show
 ```
+
 The only problem remaining is that after reboot this will not be saved, the Linux will revert to previous settings. To fix that, use the following command
 ```bash
 echo '/swapfile none swap sw 0 0' | sudo tee -a /etc/fstab
