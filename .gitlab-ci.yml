@@ -20,7 +20,7 @@ build lordi:
   script:
     - ./gradlew assemble
 
-test heroes:
+test lordi:
   stage: test
   tags:
     - lordi-test
