@@ -12,7 +12,7 @@ import java.util.Optional;
 @Data
 @RequiredArgsConstructor
 @NoArgsConstructor
-@Table(name="tbl_template")
+@Table(name="users_table")
 @Entity
 public class User {
     @Id
