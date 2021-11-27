@@ -1,6 +1,6 @@
 stages:
   - build
-#  - test
+  - test
   - deploy
 
 before_script:
@@ -20,12 +20,12 @@ build lordi:
   script:
     - ./gradlew assemble
 
-#test heroes:
-#  stage: test
-#  tags:
-#    - lordi-test
-#  script:
-#    - ./gradlew check
+test heroes:
+  stage: test
+  tags:
+    - lordi-test
+  script:
+    - ./gradlew check
 
 deploy lordi:
   stage: deploy
