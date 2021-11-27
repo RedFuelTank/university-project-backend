@@ -34,11 +34,6 @@ class OfferControllerTest {
     ObjectMapper objectMapper;
 
     @Test
-    void testIfTests() {
-        fail();
-    }
-
-    @Test
     void getOfferListTest() throws Exception {
         MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("/offers"))
                 .andExpect(status().isOk())
