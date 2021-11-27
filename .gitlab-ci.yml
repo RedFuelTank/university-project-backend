@@ -8,6 +8,9 @@ before_script:
 
 build lordi:
   stage: build
+  except:
+    refs:
+      - pages
   cache:
     paths:
       - .gradle/wrapper
@@ -22,6 +25,9 @@ build lordi:
 
 test lordi:
   stage: test
+  except:
+    refs:
+      - pages
   tags:
     - lordi-test
   script:
