@@ -9,6 +9,6 @@ import java.util.List;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
-  @Query(value = "select * from user where lower(name) like : username", nativeQuery = true)
+  @Query(value = "select * from user_table where lower(name) like : username", nativeQuery = true)
   List<User> findByNameIsLike(String name);
 }
