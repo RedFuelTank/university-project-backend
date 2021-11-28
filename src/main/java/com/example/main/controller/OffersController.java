@@ -15,7 +15,7 @@ import java.util.Optional;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
-@RequestMapping("/offers")
+@RequestMapping({"/offers", "/offers2"})
 @RestController
 public class OffersController {
     private final AdvertisementService advertisementService;
