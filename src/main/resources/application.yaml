@@ -28,3 +28,10 @@ spring:
       # this enables http://localhost:8080/api/h2-console
       # username/password are sa (defined few lines above)
       enabled: true
+
+app:
+  users:
+    userName: kilril
+    userPassword: kilril123
+    adminName: danila
+    adminPassword: danila123
