@@ -8,6 +8,7 @@ import com.example.main.service.exception.AdvertisementNotFoundException;
 import com.example.main.service.exception.PageNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,8 +16,9 @@ import java.util.Optional;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
-@RequestMapping({"/offers", "/offers2"})
+@RequestMapping({"/offers"})
 @RestController
+@EnableWebSecurity
 public class OffersController {
     private final AdvertisementService advertisementService;
     private final UserService userService;

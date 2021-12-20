@@ -20,8 +20,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth.inMemoryAuthentication().withUser(usersConfig.getAdminName()).password(passwordEncoder().encode(usersConfig.getAdminPassword())).authorities(ApplicationRoles.USER, ApplicationRoles.ADMIN).
-                and().withUser(usersConfig.getUserName()).password(passwordEncoder().encode(usersConfig.getUserPassword())).authorities(ApplicationRoles.USER);
+        auth.inMemoryAuthentication().
+                withUser(usersConfig.getAdminName()).password(passwordEncoder().
+                        encode(usersConfig.getAdminPassword())).authorities(ApplicationRoles.USER, ApplicationRoles.ADMIN).
+                and().
+                withUser(usersConfig.getUserName()).password(passwordEncoder().
+                        encode(usersConfig.getUserPassword())).authorities(ApplicationRoles.USER);
     }
 
     @Override

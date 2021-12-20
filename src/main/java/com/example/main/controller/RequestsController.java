@@ -5,6 +5,7 @@ import com.example.main.service.AdvertisementService;
 import com.example.main.service.UserService;
 import com.example.main.service.exception.AdvertisementNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -12,6 +13,7 @@ import java.util.Optional;
 
 @RequestMapping("/requests")
 @RestController
+@EnableWebSecurity
 public class RequestsController {
     private final AdvertisementService advertisementService;
     private final UserService userService;

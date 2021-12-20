@@ -5,6 +5,7 @@ import com.example.main.dto.UserDto;
 import com.example.main.model.User;
 import com.example.main.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -12,6 +13,7 @@ import java.util.Optional;
 
 @RequestMapping("/users")
 @RestController
+@EnableWebSecurity
 public class UsersController {
   private final UserService userService;
 
