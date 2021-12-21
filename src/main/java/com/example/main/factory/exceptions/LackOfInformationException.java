@@ -1,4 +1,4 @@
 package com.example.main.factory.exceptions;
 
-public class LackOfInformationException extends RuntimeException{
+public class LackOfInformationException extends RuntimeException {
 }

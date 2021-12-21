@@ -7,23 +7,23 @@ import com.example.main.dto.UserDto;
 import com.example.main.model.User;
 
 public class UserFactory {
-  public static UserDto createUserDto(User user) {
-    UserDtoBuilder userDtoBuilder = new UserDtoBuilder(user.getId(), user.getUsername(),
-      user.getName(), user.getSurname());
+    public static UserDto createUserDto(User user) {
+        UserDtoBuilder userDtoBuilder = new UserDtoBuilder(user.getId(), user.getUsername(),
+                user.getName(), user.getSurname());
 
-    user.getPhoneNumber().ifPresent(userDtoBuilder::setPhoneNumber);
-    user.getEmail().ifPresent(userDtoBuilder::setEmail);
+        user.getPhoneNumber().ifPresent(userDtoBuilder::setPhoneNumber);
+        user.getEmail().ifPresent(userDtoBuilder::setEmail);
 
-    return userDtoBuilder.apply();
-  }
+        return userDtoBuilder.apply();
+    }
 
-  public static User createUser(RegistrationDto registrationDto) {
-    UserBuilder userBuilder = new UserBuilder(registrationDto.getUsername(), registrationDto.getName(),
-      registrationDto.getSurname(), registrationDto.getPassword());
+    public static User createUser(RegistrationDto registrationDto) {
+        UserBuilder userBuilder = new UserBuilder(registrationDto.getUsername(), registrationDto.getName(),
+                registrationDto.getSurname(), registrationDto.getPassword());
 
-    registrationDto.getPhoneNumber().ifPresent(userBuilder::setPhoneNumber);
-    registrationDto.getEmail().ifPresent(userBuilder::setPhoneNumber);
+        registrationDto.getPhoneNumber().ifPresent(userBuilder::setPhoneNumber);
+        registrationDto.getEmail().ifPresent(userBuilder::setPhoneNumber);
 
-    return userBuilder.apply();
-  }
+        return userBuilder.apply();
+    }
 }

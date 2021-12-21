@@ -11,17 +11,20 @@ import java.util.Optional;
 @AllArgsConstructor
 @NoArgsConstructor
 public abstract class ClientDto {
-  @NonNull private String username;
-  private String email;
-  @NonNull private String name;
-  @NonNull private String surname;
-  private String phoneNumber;
+    @NonNull
+    private String username;
+    private String email;
+    @NonNull
+    private String name;
+    @NonNull
+    private String surname;
+    private String phoneNumber;
 
-  public Optional<String> getEmail() {
-    return Optional.ofNullable(this.email);
-  }
+    public Optional<String> getEmail() {
+        return Optional.ofNullable(this.email);
+    }
 
-  public Optional<String> getPhoneNumber() {
-    return Optional.ofNullable(this.phoneNumber);
-  }
+    public Optional<String> getPhoneNumber() {
+        return Optional.ofNullable(this.phoneNumber);
+    }
 }

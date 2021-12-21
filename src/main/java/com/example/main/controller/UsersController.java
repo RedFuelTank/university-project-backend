@@ -15,30 +15,30 @@ import java.util.Optional;
 @RestController
 @EnableWebSecurity
 public class UsersController {
-  private final UserService userService;
+    private final UserService userService;
 
-  @Autowired
-  public UsersController(UserService userService) {
-    this.userService = userService;
-  }
+    @Autowired
+    public UsersController(UserService userService) {
+        this.userService = userService;
+    }
 
-  @GetMapping
-  public List<UserDto> getUsers(@RequestParam Optional<String> name) {
-    return userService.getAll(name);
-  }
+    @GetMapping
+    public List<UserDto> getUsers(@RequestParam Optional<String> name) {
+        return userService.getAll(name);
+    }
 
-  @PostMapping
-  public UserDto saveUser(@RequestBody RegistrationDto userDto) {
-    return userService.save(userDto);
-  }
+    @PostMapping
+    public UserDto saveUser(@RequestBody RegistrationDto userDto) {
+        return userService.save(userDto);
+    }
 
-  @GetMapping("/{id}")
-  public UserDto getById(@PathVariable Long id) {
-    return userService.findById(id);
-  }
+    @GetMapping("/{id}")
+    public UserDto getById(@PathVariable Long id) {
+        return userService.findById(id);
+    }
 
-  @DeleteMapping("{id}")
-  public void deleteUser(@PathVariable Long id) {
-    userService.delete(id);
-  }
+    @DeleteMapping("{id}")
+    public void deleteUser(@PathVariable Long id) {
+        userService.delete(id);
+    }
 }

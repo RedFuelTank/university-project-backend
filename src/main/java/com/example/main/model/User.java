@@ -12,16 +12,20 @@ import java.util.Optional;
 @Data
 @RequiredArgsConstructor
 @NoArgsConstructor
-@Table(name="users_table")
+@Table(name = "users_table")
 @Entity
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @NonNull private String username;
-    @NonNull private String password;
-    @NonNull private String name;
-    @NonNull private String surname;
+    @NonNull
+    private String username;
+    @NonNull
+    private String password;
+    @NonNull
+    private String name;
+    @NonNull
+    private String surname;
     private String email;
     private String phoneNumber;
 

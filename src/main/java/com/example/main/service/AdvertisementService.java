@@ -25,15 +25,15 @@ public class AdvertisementService {
     private UserService userService;
     private final AdvertisementFilter filter = new AdvertisementFilter();
 
-  @Autowired
-  public AdvertisementService(AdvertisementRepository advertisementRepository, UserService userService) {
-    this.advertisementRepository = advertisementRepository;
-    this.userService = userService;
-  }
+    @Autowired
+    public AdvertisementService(AdvertisementRepository advertisementRepository, UserService userService) {
+        this.advertisementRepository = advertisementRepository;
+        this.userService = userService;
+    }
 
-  public List<OfferDto> getOffers(Optional<Integer> page,
-                                  Optional<String> startDate,
-                                  Optional<String> expireDate) {
+    public List<OfferDto> getOffers(Optional<Integer> page,
+                                    Optional<String> startDate,
+                                    Optional<String> expireDate) {
 
         List<Advertisement> offers = getFilteredAdvertisements(advertisementRepository.getAllOffers(),
                 page, startDate, expireDate);
@@ -81,8 +81,8 @@ public class AdvertisementService {
         return AdvertisementFactory.createOfferDto(advertisement);
     }
 
-  public AdvertisementDto findById(Long id) {
-    Advertisement advertisement = getDbAdvertisementById(id);
+    public AdvertisementDto findById(Long id) {
+        Advertisement advertisement = getDbAdvertisementById(id);
 
         return advertisement.getType() == Advertisement.Type.OFFER ? AdvertisementFactory.createOfferDto(advertisement)
                 : AdvertisementFactory.createRequestDto(advertisement);

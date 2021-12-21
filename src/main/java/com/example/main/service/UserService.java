@@ -19,56 +19,56 @@ import java.util.stream.Collectors;
 
 @Service
 public class UserService {
-  private UserRepository userRepository;
+    private UserRepository userRepository;
 
-  @Autowired
-  public UserService(UserRepository userRepository) {
-    this.userRepository = userRepository;
-  }
-
-  public List<UserDto> getAll(@RequestParam Optional<String> nameOp) {
-    if (nameOp.isEmpty()) {
-      return convertToDto(userRepository.findAll());
-    } else {
-      return convertToDto(userRepository.findByNameIsLike('%' + nameOp.get().toLowerCase() + '%'));
-    }
-  }
-
-  private List<UserDto> convertToDto(List<User> users) {
-    return users.stream()
-      .map(UserFactory::createUserDto)
-      .collect(Collectors.toList());
-
-  }
-
-  public UserDto save(RegistrationDto registrationDto) {
-    if (registrationDto.getUsername().isBlank()) {
-      throw new BadUsernameException();
+    @Autowired
+    public UserService(UserRepository userRepository) {
+        this.userRepository = userRepository;
     }
 
-    if (registrationDto.getName().isBlank()) {
-      throw new BadNameException();
+    public List<UserDto> getAll(@RequestParam Optional<String> nameOp) {
+        if (nameOp.isEmpty()) {
+            return convertToDto(userRepository.findAll());
+        } else {
+            return convertToDto(userRepository.findByNameIsLike('%' + nameOp.get().toLowerCase() + '%'));
+        }
     }
 
-    if (registrationDto.getSurname().isBlank()) {
-      throw new BadSurnameException();
+    private List<UserDto> convertToDto(List<User> users) {
+        return users.stream()
+                .map(UserFactory::createUserDto)
+                .collect(Collectors.toList());
+
     }
 
-    User savedUser = userRepository.save(UserFactory.createUser(registrationDto));
-    return findById(savedUser.getId());
-  }
+    public UserDto save(RegistrationDto registrationDto) {
+        if (registrationDto.getUsername().isBlank()) {
+            throw new BadUsernameException();
+        }
 
-  public UserDto findById(Long id)  {
-    User user = getDbUserByID(id);
-    return UserFactory.createUserDto(user);
-  }
+        if (registrationDto.getName().isBlank()) {
+            throw new BadNameException();
+        }
 
-  private User getDbUserByID(Long id) {
-    return userRepository.findById(id).orElseThrow(UserNotFoundException::new);
-  }
+        if (registrationDto.getSurname().isBlank()) {
+            throw new BadSurnameException();
+        }
 
-  public void delete(Long id) {
-    userRepository.deleteById(id);
-  }
+        User savedUser = userRepository.save(UserFactory.createUser(registrationDto));
+        return findById(savedUser.getId());
+    }
+
+    public UserDto findById(Long id) {
+        User user = getDbUserByID(id);
+        return UserFactory.createUserDto(user);
+    }
+
+    private User getDbUserByID(Long id) {
+        return userRepository.findById(id).orElseThrow(UserNotFoundException::new);
+    }
+
+    public void delete(Long id) {
+        userRepository.deleteById(id);
+    }
 
 }
