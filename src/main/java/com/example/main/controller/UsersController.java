@@ -13,7 +13,6 @@ import java.util.Optional;
 
 @RequestMapping("/users")
 @RestController
-@EnableWebSecurity
 public class UsersController {
   private final UserService userService;
 
