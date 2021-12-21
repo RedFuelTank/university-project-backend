@@ -18,7 +18,6 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RequestMapping({"/offers"})
 @RestController
-@EnableWebSecurity
 public class OffersController {
     private final AdvertisementService advertisementService;
     private final UserService userService;

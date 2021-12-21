@@ -1,10 +1,12 @@
 package com.example.main.controller;
 
+import com.example.main.config.security.ApplicationRoles;
 import com.example.main.dto.RequestDto;
 import com.example.main.service.AdvertisementService;
 import com.example.main.service.UserService;
 import com.example.main.service.exception.AdvertisementNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,10 +15,27 @@ import java.util.Optional;
 
 @RequestMapping("/requests")
 @RestController
-@EnableWebSecurity
 public class RequestsController {
     private final AdvertisementService advertisementService;
     private final UserService userService;
+
+    @GetMapping("forAdmin")
+    @Secured(ApplicationRoles.ADMIN)
+    public String getSmth() {
+        return "admin";
+    }
+
+    @GetMapping("forUsers")
+    @Secured({ApplicationRoles.ADMIN, ApplicationRoles.USER})
+    public String getSmth1() {
+        return "user";
+    }
+
+    @GetMapping("forEverybody")
+    @Secured({ApplicationRoles.ADMIN, ApplicationRoles.USER, "ROLE_ANONYMOUS"})
+    public String getForAll() {
+        return "Everybody can access";
+    }
 
     @Autowired
     public RequestsController(AdvertisementService advertisementService, UserService userService) {
