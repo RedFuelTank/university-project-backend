@@ -1,5 +1,7 @@
 package com.example.main.controller;
 
+import com.example.main.config.security.UserUtil;
+import com.example.main.config.security.jwt.JwtTokenProvider;
 import com.example.main.dto.RegistrationDto;
 import com.example.main.dto.UserDto;
 import com.example.main.model.User;
@@ -36,8 +38,14 @@ public class UsersController {
         return userService.findById(id);
     }
 
+    @GetMapping("/authorizationTest")
+    private Object authorizationTest() {
+        return UserUtil.getLoggedInUser();
+    }
+
     @DeleteMapping("{id}")
     public void deleteUser(@PathVariable Long id) {
         userService.delete(id);
     }
+
 }

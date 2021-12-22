@@ -30,6 +30,10 @@ spring:
       enabled: true
 
 app:
+  jwt:
+    secret: c2VjcmV0
+    duration-min: 30
+
   users:
     userName: kilril
     userPassword: kilril123
