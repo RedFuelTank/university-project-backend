@@ -1,13 +1,13 @@
 package com.example.main.controller;
 
 import com.example.main.config.security.UserUtil;
-import com.example.main.config.security.jwt.JwtTokenProvider;
+import com.example.main.config.security.users.LoginRequest;
+import com.example.main.config.security.users.LoginResponse;
+import com.example.main.config.security.users.LoginService;
 import com.example.main.dto.RegistrationDto;
 import com.example.main.dto.UserDto;
-import com.example.main.model.User;
 import com.example.main.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,6 +23,9 @@ public class UsersController {
         this.userService = userService;
     }
 
+    @Autowired
+    private LoginService loginService;
+
     @GetMapping
     public List<UserDto> getUsers(@RequestParam Optional<String> name) {
         return userService.getAll(name);
@@ -31,6 +34,11 @@ public class UsersController {
     @PostMapping
     public UserDto saveUser(@RequestBody RegistrationDto userDto) {
         return userService.save(userDto);
+    }
+
+    @PostMapping("/login")
+    public LoginResponse login(@RequestBody LoginRequest loginRequest) {
+        return loginService.login(loginRequest);
     }
 
     @GetMapping("/{id}")
