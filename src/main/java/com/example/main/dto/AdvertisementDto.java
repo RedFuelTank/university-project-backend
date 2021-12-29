@@ -1,11 +1,9 @@
 package com.example.main.dto;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
-@Data
+@Getter
+@Setter
 @RequiredArgsConstructor
 @NoArgsConstructor
 public abstract class AdvertisementDto {

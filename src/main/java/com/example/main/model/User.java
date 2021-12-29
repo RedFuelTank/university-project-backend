@@ -9,7 +9,8 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import java.util.Optional;
 
-@Data
+@Getter
+@Setter
 @RequiredArgsConstructor
 @NoArgsConstructor
 @Table(name = "users_table")

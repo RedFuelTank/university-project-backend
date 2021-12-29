@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -34,6 +35,7 @@ class OfferControllerTest {
     ObjectMapper objectMapper;
 
     @Test
+    @WithMockUser(username = "kilril", password = "kilril123")
     void getOfferListTest() throws Exception {
         MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("/offers"))
                 .andExpect(status().isOk())
@@ -44,6 +46,7 @@ class OfferControllerTest {
     }
 
     @Test
+    @WithMockUser(username = "kilril", password = "kilril123")
     void testCanAddNewOffer() throws Exception {
         Advertisement offer = new Advertisement("Will complete project for us", "10^10 euro",
                 1, 0, 0, "", "25-11-2023", Advertisement.Type.OFFER);

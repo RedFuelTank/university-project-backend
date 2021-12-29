@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -37,6 +38,7 @@ class UsersControllerTest {
 
 
   @Test
+  @WithMockUser(username = "kilril", password = "kilril123")
   void getUsersListOfUsersTest() throws Exception {
     MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("/users"))
       .andExpect(status().isOk())
@@ -47,6 +49,7 @@ class UsersControllerTest {
   }
 
   @Test
+  @WithMockUser(username = "kilril", password = "kilril123")
   void testCanAddNewUser() throws Exception {
     RegistrationDto newUser = new RegistrationDto("Owl", "qwerty", "owl@goodmail.com",
             "Ed", "Grey", "45679078");
@@ -70,6 +73,7 @@ class UsersControllerTest {
   }
 
   @Test
+  @WithMockUser(username = "kilril", password = "kilril123")
   void testCanAddMultipleUsers() throws Exception {
     List<RegistrationDto> newUsers = new ArrayList<>();
     newUsers.add(new RegistrationDto("Dead", "qwerty", "dead@goodmail.com",
@@ -95,6 +99,7 @@ class UsersControllerTest {
   }
 
   @Test
+  @WithMockUser(username = "kilril", password = "kilril123")
   void testAddingNewUserGivesErrorIfUsernameBlank() {
     RegistrationDto newUser = new RegistrationDto("", "qwerty", "owl@goodmail.com",
             "Hondo", "Grey", "45679078");
@@ -107,6 +112,7 @@ class UsersControllerTest {
   }
 
   @Test
+  @WithMockUser(username = "kilril", password = "kilril123")
   void testAddingNewUserGivesErrorIfNameBlank() {
     RegistrationDto newUser = new RegistrationDto("Mine", "qwerty", "owl@goodmail.com",
             "", "Grey", "45679078");
@@ -119,6 +125,7 @@ class UsersControllerTest {
   }
 
   @Test
+  @WithMockUser(username = "kilril", password = "kilril123")
   void testAddingNewUserGivesErrorIfSurnameBlank() {
     RegistrationDto newUser = new RegistrationDto("Waaat", "qwerty", "owl@goodmail.com",
             "Mondo", "", "45679078");
