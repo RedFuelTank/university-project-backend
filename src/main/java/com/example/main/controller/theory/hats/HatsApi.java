@@ -1,5 +1,6 @@
 package com.example.main.controller.theory.hats;
 
+import com.example.main.controller.theory.hats.exceptions.HatNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;

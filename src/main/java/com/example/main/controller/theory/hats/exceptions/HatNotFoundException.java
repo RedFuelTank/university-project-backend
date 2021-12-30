@@ -1,4 +1,4 @@
-package com.example.main.controller.theory.hats;
+package com.example.main.controller.theory.hats.exceptions;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
