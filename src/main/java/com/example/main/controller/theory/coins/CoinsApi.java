@@ -1,5 +1,17 @@
 package com.example.main.controller.theory.coins;
 
+
+import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+@RequestMapping("/coins")
+@RestController
 public class CoinsApi {
 
     //todo Welcome to the theory!
@@ -28,18 +40,41 @@ public class CoinsApi {
 
     //todo B "I need to have like a list view with many coins"
     // create a method to query coins (plural)
+    @GetMapping()
+    public List<Coin> getCoins(@RequestParam(required = false) Optional<String> period,
+                               @RequestParam(required = false) Optional<String> region,
+                               Sort sort) {
+        return new ArrayList<>();
+    }
+
 
     //todo C "If I click on a single coin, I get to a detail page."
     // create a method to query a single coin
+    @GetMapping("{id}")
+    public Coin getCoin(@PathVariable int id) {
+        return new Coin();
+    }
 
     //todo D "I want to add new coins"
     // create a method to save a new coin
+    @PostMapping()
+    public Coin saveCoin(@RequestBody Coin coin) {
+        return new Coin();
+    }
 
     //todo E "update existing ones"
     // create a method to update a coin
+    @PatchMapping("{id}")
+    public Coin updateCoin(@PathVariable int id) {
+        return new Coin();
+    }
 
     //todo F "occasionally delete some"
     // create a method to delete a blog
+    @DeleteMapping("{id}")
+    public Coin deleteCoin(@PathVariable int id) {
+        return new Coin();
+    }
 
     //todo G, H "There should be some filtering, by period and region"
     // G modify correct method to filter by period (ancient times, 18th century, 19th century)
@@ -50,5 +85,4 @@ public class CoinsApi {
     // I modify correct method to provide sorting by value and date added
     // J modify correct method to support sorting in ascending and descending order
     // in addition write some examples for how you will sort using your api (provide urls)
-
 }
