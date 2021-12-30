@@ -31,9 +31,9 @@ public class UsersController {
         return userService.getAll(name);
     }
 
-    @PostMapping
-    public UserDto saveUser(@RequestBody RegistrationDto userDto) {
-        return userService.save(userDto);
+    @PostMapping("/register")
+    public UserDto register(@RequestBody RegistrationDto registrationDto) {
+        return userService.register(registrationDto);
     }
 
     @PostMapping("/login")

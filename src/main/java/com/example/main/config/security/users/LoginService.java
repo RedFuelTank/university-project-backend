@@ -1,5 +1,6 @@
 package com.example.main.config.security.users;
 
+import com.example.main.config.security.ApplicationRoles;
 import com.example.main.config.security.jwt.JwtTokenProvider;
 import com.example.main.service.exception.UserBadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +34,11 @@ public class LoginService {
         UserDetails principal = (UserDetails) authentication.getPrincipal();
         String token = jwtTokenProvider.generateToken(principal.getUsername());
 
-        return new LoginResponse(principal.getUsername(), token, UserRole.USER);
+        return new LoginResponse(principal.getUsername(), token, getRole(principal));
+    }
+
+    private UserRole getRole(UserDetails principal) {
+        boolean isAdmin = principal.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals(ApplicationRoles.ADMIN));
+        return (isAdmin) ? UserRole.ADMIN : UserRole.USER;
     }
 }

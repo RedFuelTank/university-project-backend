@@ -41,7 +41,7 @@ public class UserService {
 
     }
 
-    public UserDto save(RegistrationDto registrationDto) {
+    public UserDto register(RegistrationDto registrationDto) {
         if (registrationDto.getUsername().isBlank()) {
             throw new BadUsernameException();
         }

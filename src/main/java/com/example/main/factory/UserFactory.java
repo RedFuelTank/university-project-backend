@@ -22,7 +22,7 @@ public class UserFactory {
                 registrationDto.getSurname(), registrationDto.getPassword());
 
         registrationDto.getPhoneNumber().ifPresent(userBuilder::setPhoneNumber);
-        registrationDto.getEmail().ifPresent(userBuilder::setPhoneNumber);
+        registrationDto.getEmail().ifPresent(userBuilder::setEmail);
 
         return userBuilder.apply();
     }
