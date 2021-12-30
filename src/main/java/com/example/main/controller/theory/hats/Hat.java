@@ -1,4 +1,4 @@
-package ee.taltech.heroes.controller.theory.hats;
+package com.example.main.controller.theory.hats;
 
 public class Hat {
 

@@ -1,4 +1,4 @@
-package ee.taltech.heroes.controller.theory.boardgames;
+package com.example.main.controller.theory.boardgames;
 
 public class BoardGamesApi {
 

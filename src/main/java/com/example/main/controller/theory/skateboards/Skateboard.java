@@ -1,4 +1,4 @@
-package ee.taltech.heroes.controller.theory.skateboards;
+package com.example.main.controller.theory.skateboards;
 
 public class Skateboard {
 

@@ -1,4 +1,4 @@
-package ee.taltech.heroes.controller.theory.coins;
+package com.example.main.controller.theory.coins;
 
 public class CoinsApi {
 
