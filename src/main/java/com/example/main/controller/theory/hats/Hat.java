@@ -1,5 +1,7 @@
 package com.example.main.controller.theory.hats;
 
+import java.util.Objects;
+
 public class Hat {
 
     private Long id;
@@ -55,5 +57,18 @@ public class Hat {
 
     public void setSize(String size) {
         this.size = size;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Hat hat = (Hat) o;
+        return Objects.equals(id, hat.id) && Objects.equals(colour, hat.colour) && Objects.equals(brand, hat.brand) && Objects.equals(price, hat.price) && Objects.equals(style, hat.style) && Objects.equals(size, hat.size);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, colour, brand, price, style, size);
     }
 }
