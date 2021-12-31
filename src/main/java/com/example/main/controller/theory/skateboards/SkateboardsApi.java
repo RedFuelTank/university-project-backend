@@ -51,16 +51,16 @@ public class SkateboardsApi {
     // create a method to query a single skateboard
     @GetMapping("{id}")
     public Skateboard getSkateboardById(@PathVariable int id) {
-        Optional<Skateboard> hatOptional = skateboards.stream().filter(w -> w.getId() == id).findFirst();
-        if (hatOptional.isPresent()) return hatOptional.get();
+        Optional<Skateboard> skateOptional = skateboards.stream().filter(w -> w.getId() == id).findFirst();
+        if (skateOptional.isPresent()) return skateOptional.get();
         throw new SkateNotFoundBoardException();
     }
 
     //todo D "button to add a new skateboard"
     // create a method to save a new skateboard
     @PostMapping
-    public void saveSkateboard(@RequestBody Skateboard hat) {
-        skateboards.add(hat);
+    public void saveSkateboard(@RequestBody Skateboard skateboard) {
+        skateboards.add(skateboard);
     }
 
 
@@ -69,11 +69,11 @@ public class SkateboardsApi {
     @PatchMapping("{id}")
     public Skateboard updateSkateboard(@RequestBody Skateboard updatedSkateboard, @PathVariable int id) {
         Skateboard skateboard = getSkateboardById(id);
-        updateHatField(skateboard, updatedSkateboard);
+        updateSkateField(skateboard, updatedSkateboard);
         return skateboard;
     }
 
-    private void updateHatField(Skateboard skateboard, Skateboard newSkateboard) {
+    private void updateSkateField(Skateboard skateboard, Skateboard newSkateboard) {
         skateboard.setCondition(newSkateboard.getCondition());
         skateboard.setDesigner(newSkateboard.getDesigner());
         skateboard.setPrice(newSkateboard.getPrice());
