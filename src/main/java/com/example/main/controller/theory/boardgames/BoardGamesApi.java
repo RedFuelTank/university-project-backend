@@ -1,5 +1,15 @@
 package com.example.main.controller.theory.boardgames;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
+
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+@RequestMapping("/boardgames")
+@RestController
 public class BoardGamesApi {
 
     //todo Welcome to the theory!
@@ -28,22 +38,69 @@ public class BoardGamesApi {
     // For a catalog of games we can filter by genre and number of players.
     // Sort by gameplay time and year released.
     //
+
+    private final List<BoardGame> boardGames = new ArrayList<>();
+
     //todo A first things first, please add necessary annotations to this class
 
     //todo B "We have a large catalog of games from which our members can select games they want to play."
     // create a method to query BoardGames (plural)
 
+    @GetMapping
+    public List<BoardGame> getAllBoardGames(@RequestParam Optional<String> genre,
+                                            @RequestParam Optional<String> playersNumber,
+                                            @RequestParam Optional<String> sortBy) {
+        Stream<BoardGame> requiredGames = new ArrayList<>(boardGames).stream();
+        if (genre.isPresent()) {
+            requiredGames = requiredGames.filter(game -> game.getGenre().equals(genre.get()));
+        }
+        if (playersNumber.isPresent()) {
+            requiredGames = requiredGames.filter(game -> game.getNumberOfPlayers().equals(playersNumber.get()));
+        }
+        return requiredGames.collect(Collectors.toList());
+    }
+
     //todo C "Each game has a detailed info on a separate page."
     // create a method to query a single BoardGame
+
+    @GetMapping("{id}")
+    public BoardGame getSingleBoardGame(@PathVariable int id) {
+        Optional<BoardGame> requiredBoardGame = boardGames.stream().filter(game -> game.getId() == id).findFirst();
+        if (requiredBoardGame.isPresent()) {
+            return requiredBoardGame.get();
+        } else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Board game not found");
+        }
+    }
 
     //todo D "Each month we buy new game and add it to our system"
     // create a method to save a new BoardGame
 
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public BoardGame postBoardGame(@RequestBody BoardGame boardGame) {
+        boardGames.add(boardGame);
+        return boardGame;
+    }
+
     //todo E "We are missing functionality to update a game, but would like to have it"
     // create a method to update a BoardGame
 
+    @PutMapping("{id}")
+    public BoardGame updateBoardGame(@PathVariable int id, @RequestBody BoardGame updatedBoardGame) {
+        BoardGame boardGame = getSingleBoardGame(id);
+        boardGame.update(updatedBoardGame);
+        return boardGame;
+    }
+
     //todo F "Currently we have to delete a game and add a new one." We can assume they need delete
     // create a method to delete a BoardGame
+
+    @DeleteMapping("{id}")
+    public void deleteBoardGame(@PathVariable int id) {
+        BoardGame boardGame = getSingleBoardGame(id);
+        boardGames.remove(boardGame);
+    }
 
     //todo G, H "For a catalog of games we can filter by genre and number of players."
     // G modify correct method to filter by genre (strategy, cards, etc)
