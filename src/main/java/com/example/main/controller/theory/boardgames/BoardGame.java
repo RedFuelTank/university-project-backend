@@ -56,4 +56,12 @@ public class BoardGame {
     public void setYearReleased(String yearReleased) {
         this.yearReleased = yearReleased;
     }
+
+    public void update(BoardGame updatedBoardGame) {
+        name = updatedBoardGame.getName();
+        genre = updatedBoardGame.getGenre();
+        numberOfPlayers = updatedBoardGame.getNumberOfPlayers();
+        gameplayTime = updatedBoardGame.getGameplayTime();
+        yearReleased = updatedBoardGame.getYearReleased();
+    }
 }
