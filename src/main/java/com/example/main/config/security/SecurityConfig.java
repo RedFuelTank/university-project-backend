@@ -48,23 +48,24 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class).headers().frameOptions().disable().and()
-                .httpBasic().
-                and()
+                .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class)
+                .headers()
+                .frameOptions()
+                .disable()
+                .and()
                 .authorizeRequests()
                 .antMatchers(HttpMethod.POST, "/users/login").permitAll()
                 .antMatchers(HttpMethod.POST, "/users/register").permitAll()
                 .antMatchers("/").permitAll()
-                .anyRequest().authenticated().
-                and()
+                .anyRequest().authenticated()
+                .and()
                 .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS).
-                and()
-                .csrf()
-                .disable()
-                .headers()
-                .httpStrictTransportSecurity().disable()
-                .and().exceptionHandling().authenticationEntryPoint(restAuthenticationEntryPoint);
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
+                .csrf().disable()
+                .headers().httpStrictTransportSecurity().disable()
+                .and()
+                .exceptionHandling().authenticationEntryPoint(restAuthenticationEntryPoint);
     }
 
     @Bean

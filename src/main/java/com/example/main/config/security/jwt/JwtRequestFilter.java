@@ -31,7 +31,9 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     private UserDetailsService userDetailsService;
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(HttpServletRequest request,
+                                    HttpServletResponse response,
+                                    FilterChain filterChain) throws ServletException, IOException {
         Optional<String> token = getToken(request);
 
         if (token.isEmpty()) {
@@ -78,8 +80,6 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
         if (header == null || !header.startsWith(BEARER)) {
             return Optional.empty();
-
-
         }
         return Optional.of(header.substring(BEARER.length()));
     }
