@@ -85,8 +85,24 @@ public class CoinsApi {
     //todo E "update existing ones"
     // create a method to update a coin
     @PatchMapping("{id}")
-    public Coin updateCoin(@PathVariable int id) {
-        return new Coin();
+    public Coin updateCoin(@PathVariable int id, @RequestBody Coin updateCoin) {
+        Optional<Coin> coin = coins.stream()
+                .filter(c -> c.getId() == id)
+                .findFirst();
+
+        coin.ifPresent(c -> update(c, updateCoin));
+
+        return coin.orElse(null);
+    }
+
+    private void update(Coin c, Coin updateCoin) {
+        c.setAge(updateCoin.getAge());
+        c.setCondition(updateCoin.getCondition());
+        c.setDateAdded(updateCoin.getDateAdded());
+        c.setName(updateCoin.getName());
+        c.setRegion(updateCoin.getRegion());
+        c.setValue(updateCoin.getValue());
+        c.setPeriod(updateCoin.getPeriod());
     }
 
     //todo F "occasionally delete some"
@@ -110,4 +126,7 @@ public class CoinsApi {
     // I modify correct method to provide sorting by value and date added
     // J modify correct method to support sorting in ascending and descending order
     // in addition write some examples for how you will sort using your api (provide urls)
+
+
+
 }
