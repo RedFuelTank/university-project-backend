@@ -1,5 +1,6 @@
 package com.example.main.controller;
 
+import com.example.main.config.security.ApplicationRoles;
 import com.example.main.dto.OfferDto;
 import com.example.main.dto.RequestDto;
 import com.example.main.service.AdvertisementService;
@@ -8,14 +9,17 @@ import com.example.main.service.exception.AdvertisementNotFoundException;
 import com.example.main.service.exception.PageNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
 
+import static com.example.main.config.security.ApplicationRoles.*;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
+@Secured(USER)
 @RequestMapping({"/offers"})
 @RestController
 public class OffersController {
@@ -27,15 +31,6 @@ public class OffersController {
     public OffersController(AdvertisementService advertisementService, UserService userService) {
         this.advertisementService = advertisementService;
         this.userService = userService;
-    }
-
-    @GetMapping()
-    public List<OfferDto> get(@RequestParam Optional<Integer> page,
-                              @RequestParam(required = false) Optional<String> startDate,
-                              @RequestParam(required = false) Optional<String> expireDate) {
-        List<OfferDto> offers = advertisementService.getOffers(page, startDate, expireDate);
-        offers.forEach(request -> request.updateUserInfo(userService.findById((long) request.getAuthorId())));
-        return offers;
     }
 
     @GetMapping("/{id}")
@@ -59,6 +54,7 @@ public class OffersController {
         return advertisementService.save(offerDto);
     }
 
+    @Secured(ADMIN)
     @DeleteMapping("{id}")
     public void deleteOffer(@PathVariable Long id) {
         advertisementService.delete(id);
