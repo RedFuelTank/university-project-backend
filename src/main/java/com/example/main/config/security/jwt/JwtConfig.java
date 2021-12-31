@@ -1,8 +1,12 @@
 package com.example.main.config.security.jwt;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
+@Getter
+@Setter
 @Configuration
 @ConfigurationProperties(prefix = "app.jwt")
 public class JwtConfig {
@@ -12,21 +16,5 @@ public class JwtConfig {
 
     public int getDurationInMs() {
         return durationMin * 60 * 1000;
-    }
-
-    public String getSecret() {
-        return secret;
-    }
-
-    public void setSecret(String secret) {
-        this.secret = secret;
-    }
-
-    public int getDurationMin() {
-        return durationMin;
-    }
-
-    public void setDurationMin(int durationMin) {
-        this.durationMin = durationMin;
     }
 }
