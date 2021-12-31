@@ -22,7 +22,6 @@ public class HatsApi {
 	 * @param reverse param to choose if list should be reversed
 	 * @return list of hats
 	 */
-
 	@GetMapping
 	public List<Hat> getAllHats(@RequestParam Optional<String> style, @RequestParam Optional<String> colour,
 								@RequestParam Optional<String> sort, @RequestParam Optional<Integer> reverse) {
