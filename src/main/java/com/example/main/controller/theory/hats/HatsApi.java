@@ -11,6 +11,18 @@ import java.util.stream.Collectors;
 public class HatsApi {
 	private final List<Hat> hats = new ArrayList<>();
 
+	/**
+	 * Examples:
+	 * 		 /hats?style=50cent&colour=blaaack&sort=size&reverse=1
+	 * 		 /hats?style=50cent&colour=blaaack&sort=size
+	 * 		 /hats?style=eminem&colour=white&sort=price&reverse=0
+	 * @param style param to filter by style
+	 * @param colour param to filter by colour
+	 * @param sort param to choose how to sort list
+	 * @param reverse param to choose if list should be reversed
+	 * @return list of hats
+	 */
+
 	@GetMapping
 	public List<Hat> getAllHats(@RequestParam Optional<String> style, @RequestParam Optional<String> colour,
 								@RequestParam Optional<String> sort, @RequestParam Optional<Integer> reverse) {
