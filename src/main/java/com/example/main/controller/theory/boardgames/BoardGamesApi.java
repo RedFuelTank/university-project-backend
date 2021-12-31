@@ -4,9 +4,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @RequestMapping("/boardgames")
 @RestController
@@ -47,8 +47,17 @@ public class BoardGamesApi {
     // create a method to query BoardGames (plural)
 
     @GetMapping
-    public List<BoardGame> getBoardGames() {
-        return boardGames;
+    public List<BoardGame> getAllBoardGames(@RequestParam Optional<String> genre,
+                                            @RequestParam Optional<String> playersNumber,
+                                            @RequestParam Optional<String> sortBy) {
+        Stream<BoardGame> requiredGames = new ArrayList<>(boardGames).stream();
+        if (genre.isPresent()) {
+            requiredGames = requiredGames.filter(game -> game.getGenre().equals(genre.get()));
+        }
+        if (playersNumber.isPresent()) {
+            requiredGames = requiredGames.filter(game -> game.getNumberOfPlayers().equals(playersNumber.get()));
+        }
+        return requiredGames.collect(Collectors.toList());
     }
 
     //todo C "Each game has a detailed info on a separate page."
@@ -86,6 +95,7 @@ public class BoardGamesApi {
 
     //todo F "Currently we have to delete a game and add a new one." We can assume they need delete
     // create a method to delete a BoardGame
+
     @DeleteMapping("{id}")
     public void deleteBoardGame(@PathVariable int id) {
         BoardGame boardGame = getSingleBoardGame(id);
