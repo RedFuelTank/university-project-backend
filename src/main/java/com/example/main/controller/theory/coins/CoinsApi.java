@@ -6,13 +6,16 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RequestMapping("/coins")
 @RestController
 public class CoinsApi {
+    List<Coin> coins = new ArrayList<>();
 
     //todo Welcome to the theory!
     // To start put these classes into my.project.controller.theory so you can check these using swagger or browser
@@ -44,7 +47,21 @@ public class CoinsApi {
     public List<Coin> getCoins(@RequestParam(required = false) Optional<String> period,
                                @RequestParam(required = false) Optional<String> region,
                                Sort sort) {
-        return new ArrayList<>();
+        List<Coin> coins = this.coins;
+
+        if (period.isPresent()) {
+            coins = coins.stream()
+                    .filter(c -> c.getPeriod().equals(period.get()))
+                    .collect(Collectors.toList());
+        }
+
+        if (region.isPresent()) {
+            coins = coins.stream()
+                    .filter(c -> c.getRegion().equals(region.get()))
+                    .collect(Collectors.toList());
+        }
+
+        return coins;
     }
 
 
@@ -52,28 +69,52 @@ public class CoinsApi {
     // create a method to query a single coin
     @GetMapping("{id}")
     public Coin getCoin(@PathVariable int id) {
-        return new Coin();
+        return coins.stream()
+                .filter(c -> c.getId() == id)
+                .findFirst().orElse(null);
     }
 
     //todo D "I want to add new coins"
     // create a method to save a new coin
     @PostMapping()
     public Coin saveCoin(@RequestBody Coin coin) {
-        return new Coin();
+        coins.add(coin);
+        return coin;
     }
 
     //todo E "update existing ones"
     // create a method to update a coin
     @PatchMapping("{id}")
-    public Coin updateCoin(@PathVariable int id) {
-        return new Coin();
+    public Coin updateCoin(@PathVariable int id, @RequestBody Coin updateCoin) {
+        Optional<Coin> coin = coins.stream()
+                .filter(c -> c.getId() == id)
+                .findFirst();
+
+        coin.ifPresent(c -> update(c, updateCoin));
+
+        return coin.orElse(null);
+    }
+
+    private void update(Coin c, Coin updateCoin) {
+        c.setAge(updateCoin.getAge());
+        c.setCondition(updateCoin.getCondition());
+        c.setDateAdded(updateCoin.getDateAdded());
+        c.setName(updateCoin.getName());
+        c.setRegion(updateCoin.getRegion());
+        c.setValue(updateCoin.getValue());
+        c.setPeriod(updateCoin.getPeriod());
     }
 
     //todo F "occasionally delete some"
     // create a method to delete a blog
     @DeleteMapping("{id}")
     public Coin deleteCoin(@PathVariable int id) {
-        return new Coin();
+        Optional<Coin> coin = coins.stream()
+                .filter(c -> c.getId() == id)
+                .findFirst();
+
+        coin.ifPresent(c -> coins.remove(c));
+        return coin.orElse(null);
     }
 
     //todo G, H "There should be some filtering, by period and region"
@@ -85,4 +126,7 @@ public class CoinsApi {
     // I modify correct method to provide sorting by value and date added
     // J modify correct method to support sorting in ascending and descending order
     // in addition write some examples for how you will sort using your api (provide urls)
+
+
+
 }
