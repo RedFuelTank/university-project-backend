@@ -19,6 +19,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import static com.example.main.config.security.ApplicationRoles.*;
+
 @Configuration
 @EnableWebSecurity (debug = true)
 @EnableGlobalMethodSecurity(securedEnabled = true)
@@ -35,14 +37,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth.inMemoryAuthentication().
-                withUser("test").password("123").authorities(ApplicationRoles.USER).
-                and().
-                withUser(usersConfig.getAdminName()).password(passwordEncoder().
-                        encode(usersConfig.getAdminPassword())).authorities(ApplicationRoles.ADMIN).
-                and().
-                withUser(usersConfig.getUserName()).password(passwordEncoder().
-                        encode(usersConfig.getUserPassword())).authorities(ApplicationRoles.USER);
+        auth.inMemoryAuthentication()
+                .withUser(usersConfig.getAdminName())
+                .password(passwordEncoder().encode(usersConfig.getAdminPassword()))
+                .authorities(USER, ADMIN)
+                .and()
+                .withUser(usersConfig.getUserName())
+                .password(passwordEncoder().encode(usersConfig.getUserPassword()))
+                .authorities(USER);
     }
 
     @Override
