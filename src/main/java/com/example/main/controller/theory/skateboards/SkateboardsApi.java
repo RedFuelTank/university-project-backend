@@ -1,16 +1,15 @@
 package com.example.main.controller.theory.skateboards;
 
+import org.springframework.web.bind.annotation.*;
+
+import java.util.*;
+import java.util.stream.Collectors;
+
+@RequestMapping("/skateboards")
+@RestController
 public class SkateboardsApi {
 
-    //todo Welcome to the theory!
-    // To start put these classes into my.project.controller.theory so you can check these using swagger or browser
-    // Each team member has to do only 1 assignment and commit/push it to your repository.
-    // (So 2 people - 2 assignments, 3 people - 3 assignments, 4 people - 4 assignments).
-    // Make sure to commit under your user otherwise the points won't count. Each team member has to score at least 50%.
-    // Don't add unnecessary code (no need for services or database).
-    // We are doing mock-api design. I am grading urls and structure of the methods.
-    // It should still work, i.e I can access this api from swagger or browser.
-    // A good source for learning about proper API design is https://docs.microsoft.com/en-us/azure/architecture/best-practices/api-design
+    private final List<Skateboard> skateboards = new ArrayList<>();
 
     //todo The Story
     // Fred has a Skateboard shop in Telliskivi.
@@ -18,7 +17,7 @@ public class SkateboardsApi {
     // Hi. I'm Fred the hipster. I studied law and music, but now I'm selling and making skateboards. Wild life!
     // Our business has grown and I need some help automating it.
     // Currently our inventory is managed by pen and paper. You need to make it better.
-    // This is what I need:
+    // This is wSkateboard I need:
     // - an overview of the skateboards we sell
     // - I want to know which ones are in stock and which ones are new (vs used)
     // - I want to order by the price or by the name alphabetically
@@ -32,18 +31,63 @@ public class SkateboardsApi {
 
     //todo B "an overview of the skateboards we sell"
     // create a method to query skateboards (plural)
+    @GetMapping
+    public List<Skateboard> getAllSkateboards(@RequestParam Optional<String> sortType, @RequestParam Optional<String> condition,
+                                @RequestParam Optional<String> inStock, @RequestParam Optional<Integer> reverse) {
+        List<Skateboard> copy = skateboards;
+        if (inStock.isPresent())
+            copy = copy.stream().filter(w -> w.getInStock().equals(inStock.get())).collect(Collectors.toList());
+        if (condition.isPresent())
+            copy = copy.stream().filter(w -> w.getCondition().equals(condition.get())).collect(Collectors.toList());
+        if (sortType.isPresent()) {
+            if (sortType.get().equals("name")) copy.sort(Comparator.comparing(Skateboard::getName));
+            if (sortType.get().equals("price")) copy.sort(Comparator.comparing(Skateboard::getPrice));
+            if (reverse.isPresent() && reverse.get() == 1) Collections.reverse(copy);
+        }
+        return copy;
+    }
 
     //todo C "page for each skateboard where I can see it's info"
     // create a method to query a single skateboard
+    @GetMapping("{id}")
+    public Skateboard getSkateboardById(@PathVariable int id) {
+        Optional<Skateboard> hatOptional = skateboards.stream().filter(w -> w.getId() == id).findFirst();
+        if (hatOptional.isPresent()) return hatOptional.get();
+        throw new SkateNotFoundBoardException();
+    }
 
     //todo D "button to add a new skateboard"
     // create a method to save a new skateboard
+    @PostMapping
+    public void saveSkateboard(@RequestBody Skateboard hat) {
+        skateboards.add(hat);
+    }
+
 
     //todo E "button to update existing skateboard"
     // create a method to update a skateboard
+    @PatchMapping("{id}")
+    public Skateboard updateSkateboard(@RequestBody Skateboard updatedSkateboard, @PathVariable int id) {
+        Skateboard skateboard = getSkateboardById(id);
+        updateHatField(skateboard, updatedSkateboard);
+        return skateboard;
+    }
+
+    private void updateHatField(Skateboard skateboard, Skateboard newSkateboard) {
+        skateboard.setCondition(newSkateboard.getCondition());
+        skateboard.setDesigner(newSkateboard.getDesigner());
+        skateboard.setPrice(newSkateboard.getPrice());
+        skateboard.setName(newSkateboard.getName());
+        skateboard.setInStock(newSkateboard.getInStock());
+    }
 
     //todo F "button to delete skateboard"
     // create a method to delete a skateboard
+    @DeleteMapping("{id}")
+    public void deleteSkateboard(@PathVariable int id) {
+        Skateboard skateboard = getSkateboardById(id);
+        skateboards.remove(skateboard);
+    }
 
     //todo G, H "I want to know which ones are in stock and which ones are new (vs used)"
     // G modify correct method to filter whether the skateboard is in stock or out of stock
