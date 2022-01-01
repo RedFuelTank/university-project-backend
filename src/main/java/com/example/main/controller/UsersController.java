@@ -1,5 +1,6 @@
 package com.example.main.controller;
 
+import com.example.main.config.security.ApplicationRoles;
 import com.example.main.config.security.UserUtil;
 import com.example.main.config.security.users.LoginRequest;
 import com.example.main.config.security.users.LoginResponse;
@@ -11,6 +12,7 @@ import com.example.main.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -60,6 +62,7 @@ public class UsersController {
         return UserUtil.getLoggedInUser();
     }
 
+    @Secured(ApplicationRoles.ADMIN)
     @DeleteMapping("{id}")
     public void deleteUser(@PathVariable Long id) {
         userService.delete(id);
