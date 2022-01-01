@@ -117,7 +117,6 @@ public class AdvertisementService {
 
     public OfferDto save(OfferDto offerDto, String token) {
         String authorUsername = tokenProvider.getUsernameFromToken(token);
-        System.out.println(authorUsername);
         Advertisement offer = advertisementRepository.save(AdvertisementFactory.createOffer(offerDto,
                 userRepository.findByUsername(authorUsername).get(0).getId()));
         return (OfferDto) findById(offer.getId());
