@@ -27,7 +27,7 @@ public class Advertisement {
     @NonNull
     private String description;
     @NonNull
-    private int authorId;
+    private Long authorId;
     @NonNull
     private double lat;
     @NonNull

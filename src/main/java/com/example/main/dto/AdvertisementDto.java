@@ -14,7 +14,7 @@ public abstract class AdvertisementDto {
     @NonNull
     private String description;
     @NonNull
-    private int authorId;
+    private Long authorId;
 
     private String authorUsername;
     private String authorEmail;

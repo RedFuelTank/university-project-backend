@@ -27,14 +27,14 @@ public class AdvertisementRepositoryImpl implements AdvertisementRepositoryCusto
     @Override
     public List<Advertisement> getAllOffersByAuthorId(Long authorId) {
         Query query = entityManager.createQuery("select u from Advertisement u where u.type = 1 and u.authorId = ?1", Advertisement.class);
-        query.setParameter(1, authorId.intValue());
+        query.setParameter(1, authorId);
         return query.getResultList();
     }
 
     @Override
     public List<Advertisement> getAllRequestByAuthorId(Long authorId) {
         Query query = entityManager.createQuery("select u from Advertisement u where u.type = 0 and u.authorId = ?1", Advertisement.class);
-        query.setParameter(1, authorId.intValue());
+        query.setParameter(1, authorId);
         return query.getResultList();
     }
 }

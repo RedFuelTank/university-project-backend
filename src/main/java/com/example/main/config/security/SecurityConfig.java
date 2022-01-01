@@ -84,11 +84,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return super.authenticationManagerBean();
      }
 
-//    @Bean
-//    public UserDetailsService userDetailsService() {
-//        return super.userDetailsService();
-//    }
-
     @Override
     public void configure(WebSecurity web) throws Exception {
         web.ignoring().antMatchers("/swagger-resources/**",

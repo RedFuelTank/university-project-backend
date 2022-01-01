@@ -16,8 +16,8 @@ public class AdvertisementFactory {
         return offerDto;
     }
 
-    public static Advertisement createOffer(OfferDto offerDto) {
-        return new Advertisement(offerDto.getTitle(), offerDto.getDescription(), offerDto.getAuthorId(), offerDto.getLat(), offerDto.getLng(), offerDto.getAddress(), offerDto.getExpirationDate(), Advertisement.Type.OFFER);
+    public static Advertisement createOffer(OfferDto offerDto, Long authorId) {
+        return new Advertisement(offerDto.getTitle(), offerDto.getDescription(), authorId, offerDto.getLat(), offerDto.getLng(), offerDto.getAddress(), offerDto.getExpirationDate(), Advertisement.Type.OFFER);
     }
 
     public static RequestDto createRequestDto(Advertisement advertisement) {
@@ -31,8 +31,8 @@ public class AdvertisementFactory {
         return requestDto;
     }
 
-    public static Advertisement createRequest(RequestDto requestDto) {
-        return new Advertisement(requestDto.getTitle(), requestDto.getDescription(), requestDto.getAuthorId(), requestDto.getLat(), requestDto.getLng(), requestDto.getAddress(), requestDto.getExpirationDate(),
+    public static Advertisement createRequest(RequestDto requestDto, Long authorId) {
+        return new Advertisement(requestDto.getTitle(), requestDto.getDescription(), authorId, requestDto.getLat(), requestDto.getLng(), requestDto.getAddress(), requestDto.getExpirationDate(),
                 Advertisement.Type.REQUEST);
     }
 }

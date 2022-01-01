@@ -1,5 +1,6 @@
 package com.example.main.service;
 
+import com.example.main.config.security.jwt.JwtTokenProvider;
 import com.example.main.dto.AdvertisementDto;
 import com.example.main.dto.OfferDto;
 import com.example.main.dto.RequestDto;
@@ -8,6 +9,7 @@ import com.example.main.filter.AdvertisementFilter;
 import com.example.main.filter.exception.IncorrectDateException;
 import com.example.main.model.Advertisement;
 import com.example.main.repository.AdvertisementRepository;
+import com.example.main.repository.UserRepository;
 import com.example.main.service.exception.AdvertisementNotFoundException;
 import com.example.main.service.exception.PageNotFoundException;
 import com.example.main.service.exception.UserNotFoundException;
@@ -24,6 +26,12 @@ public class AdvertisementService {
     private AdvertisementRepository advertisementRepository;
     private UserService userService;
     private final AdvertisementFilter filter = new AdvertisementFilter();
+
+    @Autowired
+    private JwtTokenProvider tokenProvider;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @Autowired
     public AdvertisementService(AdvertisementRepository advertisementRepository, UserService userService) {
@@ -107,13 +115,17 @@ public class AdvertisementService {
         return ads.subList(startIndex, endIndex);
     }
 
-    public OfferDto save(OfferDto offerDto) {
-        Advertisement offer = advertisementRepository.save(AdvertisementFactory.createOffer(offerDto));
+    public OfferDto save(OfferDto offerDto, String token) {
+        String authorUsername = tokenProvider.getUsernameFromToken(token);
+        Advertisement offer = advertisementRepository.save(AdvertisementFactory.createOffer(offerDto,
+                userRepository.findByUsername(authorUsername).get(0).getId()));
         return (OfferDto) findById(offer.getId());
     }
 
-    public RequestDto save(RequestDto requestDto) {
-        Advertisement request = advertisementRepository.save(AdvertisementFactory.createRequest(requestDto));
+    public RequestDto save(RequestDto requestDto, String token) {
+        String authorUsername = tokenProvider.getUsernameFromToken(token);
+        Advertisement request = advertisementRepository.save(AdvertisementFactory.createRequest(requestDto,
+                userRepository.findByUsername(authorUsername).get(0).getId()));
         return (RequestDto) findById(request.getId());
     }
 

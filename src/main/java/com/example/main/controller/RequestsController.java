@@ -43,8 +43,9 @@ public class RequestsController {
     }
 
     @PostMapping()
-    public RequestDto saveOffer(@RequestBody RequestDto requestDto) {
-        return advertisementService.save(requestDto);
+    public RequestDto saveRequest(@RequestBody RequestDto requestDto,
+                                @RequestHeader ("Authorization") String author) {
+        return advertisementService.save(requestDto, author.substring(7));
     }
 
     @Secured(ADMIN)

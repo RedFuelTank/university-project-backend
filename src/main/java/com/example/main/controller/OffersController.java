@@ -50,8 +50,9 @@ public class OffersController {
     }
 
     @PostMapping()
-    public OfferDto saveOffer(@RequestBody OfferDto offerDto) {
-        return advertisementService.save(offerDto);
+    public OfferDto saveOffer(@RequestBody OfferDto offerDto,
+                              @RequestHeader ("Authorization") String author) {
+        return advertisementService.save(offerDto, author.substring(7));
     }
 
     @Secured(ADMIN)
