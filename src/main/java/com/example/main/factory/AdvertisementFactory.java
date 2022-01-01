@@ -17,6 +17,7 @@ public class AdvertisementFactory {
     }
 
     public static Advertisement createOffer(OfferDto offerDto, Long authorId) {
+        System.out.println(authorId);
         return new Advertisement(offerDto.getTitle(), offerDto.getDescription(), authorId, offerDto.getLat(), offerDto.getLng(), offerDto.getAddress(), offerDto.getExpirationDate(), Advertisement.Type.OFFER);
     }
 

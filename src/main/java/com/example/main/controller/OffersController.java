@@ -52,6 +52,7 @@ public class OffersController {
     @PostMapping()
     public OfferDto saveOffer(@RequestBody OfferDto offerDto,
                               @RequestHeader ("Authorization") String author) {
+        System.out.println(author.substring(7));
         return advertisementService.save(offerDto, author.substring(7));
     }
 
