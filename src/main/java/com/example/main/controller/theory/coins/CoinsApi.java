@@ -1,10 +1,11 @@
 package com.example.main.controller.theory.coins;
 
 
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -46,8 +47,28 @@ public class CoinsApi {
     @GetMapping()
     public List<Coin> getCoins(@RequestParam(required = false) Optional<String> period,
                                @RequestParam(required = false) Optional<String> region,
-                               Sort sort) {
+                               @RequestParam(defaultValue = "id,desc") String[] sort) {
         List<Coin> coins = this.coins;
+
+        // For sorting, we can use Sort class
+
+        List<Order> orders = new ArrayList<>();
+
+        try {
+            for (String order : sort) {
+                if (order.contains(",")) {
+                    String[] parameters = order.split(",");
+                    orders.add(new Order(getDirection(parameters[1]), parameters[0]));
+                } else {
+                    orders.add(new Order(Direction.DESC, order));
+                }
+            }
+
+            // coins = coinsRepository.findAll(Sort.by(orders))
+
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        }
 
         if (period.isPresent()) {
             coins = coins.stream()
@@ -64,6 +85,17 @@ public class CoinsApi {
         return coins;
     }
 
+    private Direction getDirection(String s) {
+        switch (s) {
+            case "desc":
+                return Direction.DESC;
+            case "asc":
+                return Direction.ASC;
+            default:
+                throw new IllegalArgumentException();
+        }
+    }
+
 
     //todo C "If I click on a single coin, I get to a detail page."
     // create a method to query a single coin
@@ -71,7 +103,8 @@ public class CoinsApi {
     public Coin getCoin(@PathVariable int id) {
         return coins.stream()
                 .filter(c -> c.getId() == id)
-                .findFirst().orElse(null);
+                .findFirst()
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 
     //todo D "I want to add new coins"
@@ -92,7 +125,7 @@ public class CoinsApi {
 
         coin.ifPresent(c -> update(c, updateCoin));
 
-        return coin.orElse(null);
+        return coin.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 
     private void update(Coin c, Coin updateCoin) {
@@ -114,7 +147,7 @@ public class CoinsApi {
                 .findFirst();
 
         coin.ifPresent(c -> coins.remove(c));
-        return coin.orElse(null);
+        return coin.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 
     //todo G, H "There should be some filtering, by period and region"

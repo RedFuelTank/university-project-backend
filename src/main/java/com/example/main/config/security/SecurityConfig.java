@@ -94,6 +94,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 "swagger-ui.html",
                 "/swagger-ui/**",
                 "/error",
-                "/boardgames/**");
+                "/boardgames/**",
+                "/coins/**");
     }
 }
