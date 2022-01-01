@@ -4,10 +4,13 @@ import com.example.main.config.security.UserUtil;
 import com.example.main.config.security.users.LoginRequest;
 import com.example.main.config.security.users.LoginResponse;
 import com.example.main.config.security.users.LoginService;
+import com.example.main.config.security.users.RegisterRequest;
 import com.example.main.dto.RegistrationDto;
 import com.example.main.dto.UserDto;
 import com.example.main.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -39,6 +42,12 @@ public class UsersController {
     @PostMapping("/login")
     public LoginResponse login(@RequestBody LoginRequest loginRequest) {
         return loginService.login(loginRequest);
+    }
+
+    @PostMapping("/register")
+    public ResponseEntity<Void> register(@RequestBody RegisterRequest registerRequest) {
+        loginService.register(registerRequest);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @GetMapping("/{id}")
