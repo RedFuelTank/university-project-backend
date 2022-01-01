@@ -55,6 +55,10 @@ public class LoginService {
             throw new UserBadRequestException();
         }
 
+        if (!userRepository.findByUsername(registerRequest.getUsername()).isEmpty()) {
+            throw new UserBadRequestException();
+        }
+
         User user = new User();
         user.setUsername(registerRequest.getUsername());
         user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
