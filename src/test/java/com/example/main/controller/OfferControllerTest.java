@@ -49,7 +49,7 @@ class OfferControllerTest {
     @WithMockUser(username = "kilril", password = "kilril123")
     void testCanAddNewOffer() throws Exception {
         Advertisement offer = new Advertisement("Will complete project for us", "10^10 euro",
-                1, 0, 0, "", "25-11-2023", Advertisement.Type.OFFER);
+                1L, 0, 0, "", "25-11-2023", Advertisement.Type.OFFER);
         offer.setId(20L);
         String offerDtoJson = objectMapper.writeValueAsString(AdvertisementFactory.createOfferDto(offer));
         MvcResult postResult = mockMvc.perform(MockMvcRequestBuilders.post("/offers")

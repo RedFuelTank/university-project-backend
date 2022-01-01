@@ -20,9 +20,9 @@ public class AdvertisementFilterTests {
 
     @BeforeAll
     static void createAds() {
-        ads = List.of(new Advertisement("Request-2022", "Request4", 1, 0, 0, "", "25-10-2022", Advertisement.Type.REQUEST),
-                new Advertisement("Request-2021", "Request-2021", 1, 0, 0, "", "25-10-2021", Advertisement.Type.REQUEST),
-                new Advertisement("Request-2024", "Request-2024", 1, 0, 0, "", "25-10-2024", Advertisement.Type.REQUEST));
+        ads = List.of(new Advertisement("Request-2022", "Request4", 1L, 0, 0, "", "25-10-2022", Advertisement.Type.REQUEST),
+                new Advertisement("Request-2021", "Request-2021", 1L, 0, 0, "", "25-10-2021", Advertisement.Type.REQUEST),
+                new Advertisement("Request-2024", "Request-2024", 1L, 0, 0, "", "25-10-2024", Advertisement.Type.REQUEST));
 
         ads.forEach(ad -> ad.setStartDate("20-10-2021"));
     }
