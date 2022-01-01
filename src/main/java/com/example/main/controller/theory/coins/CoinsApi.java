@@ -66,6 +66,15 @@ public class CoinsApi {
 
             // coins = coinsRepository.findAll(Sort.by(orders))
 
+            // URL examples:
+            // **/coins?sort=id,desc - default value
+            // **/coins?sort=value,desc - sort by value (descending order)
+            // **/coins?sort=value,asc - sort by value (ascending order)
+            // **/coins?sort=dateAdded,desc - sort by date added (descending order)
+            // **/coins?sort=dateAdded,desc&sort=value,asc - sort by date added (descending order) and value (ascending order)
+            // **/coins?period=19&sort=dateAdded,desc - sort by date added (descending order) and value (ascending order)
+
+
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }
