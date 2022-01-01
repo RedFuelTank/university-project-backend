@@ -39,14 +39,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(myUserDetailsService);
 
-        auth.inMemoryAuthentication()
-                .withUser(usersConfig.getAdminName())
-                .password(passwordEncoder().encode(usersConfig.getAdminPassword()))
-                .authorities(USER, ADMIN)
-                .and()
-                .withUser(usersConfig.getUserName())
-                .password(passwordEncoder().encode(usersConfig.getUserPassword()))
-                .authorities(USER);
+//        auth.inMemoryAuthentication()
+//                .withUser(usersConfig.getAdminName())
+//                .password(passwordEncoder().encode(usersConfig.getAdminPassword()))
+//                .authorities(USER, ADMIN)
+//                .and()
+//                .withUser(usersConfig.getUserName())
+//                .password(passwordEncoder().encode(usersConfig.getUserPassword()))
+//                .authorities(USER);
     }
 
     @Override
