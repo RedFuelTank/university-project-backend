@@ -28,15 +28,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private UsersConfig usersConfig;
-
     @Autowired
     private JwtRequestFilter jwtRequestFilter;
-
     @Autowired
     private RestAuthenticationEntryPoint restAuthenticationEntryPoint;
+    @Autowired
+    private MyUserDetailsService myUserDetailsService;
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(myUserDetailsService);
+
         auth.inMemoryAuthentication()
                 .withUser(usersConfig.getAdminName())
                 .password(passwordEncoder().encode(usersConfig.getAdminPassword()))
@@ -82,10 +84,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return super.authenticationManagerBean();
      }
 
-    @Bean
-    public UserDetailsService userDetailsService() {
-        return super.userDetailsService();
-    }
+//    @Bean
+//    public UserDetailsService userDetailsService() {
+//        return super.userDetailsService();
+//    }
 
     @Override
     public void configure(WebSecurity web) throws Exception {
