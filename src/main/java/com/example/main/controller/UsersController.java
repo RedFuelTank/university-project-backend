@@ -22,14 +22,13 @@ import java.util.Optional;
 @RestController
 public class UsersController {
     private final UserService userService;
+    private final LoginService loginService;
 
     @Autowired
-    public UsersController(UserService userService) {
+    public UsersController(UserService userService, LoginService loginService) {
         this.userService = userService;
+        this.loginService = loginService;
     }
-
-    @Autowired
-    private LoginService loginService;
 
     @GetMapping
     public List<UserDto> getUsers(@RequestParam Optional<String> name) {
